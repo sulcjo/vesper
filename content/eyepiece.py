@@ -1,0 +1,119 @@
+"""EYE — the optical telescope. The one witness that is not a record.
+
+The catalogue can be edited. The archive can agree to anything. The
+eyepiece is a tube, a mirror, and an old man's eye, and for a while
+that is enough to keep a star.
+"""
+
+from __future__ import annotations
+
+from content import catalog
+from engine import state as st
+from engine.io import IO
+from engine.state import GameState
+
+_MAG_LOOK = {
+    1: "it fills the eye. after so much ember-red, a bright source feels "
+       "almost rude. you let it hurt a little.",
+    2: "steady, small, certain. the kind of light the catalogue was "
+       "invented for.",
+    3: "faint. you have to look slightly away to see it at all, the old "
+       "trick, letting the edge of the eye do the believing.",
+}
+
+
+def look(state: GameState, raw: str, io: IO) -> GameState:
+    star = catalog.by_id(raw)
+    if star is None:
+        io.say(f"EYE: NO SUCH DESIGNATION — {raw.strip().upper() or '(NONE)'}", "os")
+        io.say("you check the spelling twice. some nights you would swear "
+               "you knew every name up there. tonight you let it go.", "dim")
+        return state
+
+    if catalog.front_active(state) and catalog.in_front(star):
+        return _front_scene(state, star, io)
+
+    state = st.witness(state, star.id)
+
+    if star.gone is None or state.watch < star.gone:
+        return _present_scene(state, star, io)
+    if star.gone == state.watch:
+        return _removed_today_scene(state, star, io)
+    return _removed_past_scene(state, star, io)
+
+
+def _title(star: catalog.Star) -> str:
+    return f"{star.id} — {star.name}" if star.name else star.id
+
+
+def _present_scene(state: GameState, star: catalog.Star, io: IO) -> GameState:
+    io.say(f"EYE: TRACKING {_title(star).upper()}", "os")
+    io.pause()
+    io.say(_MAG_LOOK[star.mag])
+    if star.note:
+        io.say(star.note, "dim")
+    if star.id == "VS-0302" and state.watch >= 3:
+        io.say("you time its drift against the crosshair, out of habit. "
+               "the period is unchanged. it swings around the place where "
+               "the Ember Gate was, keeping faith with a mass the archive "
+               "no longer lists. the arithmetic still works. that is the "
+               "part you don't like.")
+    if star.id == "VS-0001":
+        io.say("STILL THERE. STILL HERE.", "dim")
+    io.say("ANNOTATION LOGGED. OBSERVER OF RECORD CONFIRMS SOURCE.", "os")
+    return state
+
+
+def _removed_today_scene(state: GameState, star: catalog.Star, io: IO) -> GameState:
+    io.say(f"EYE: TRACKING {_title(star).upper()}", "os")
+    io.say("ARCHIVE: NO SUCH SOURCE. NO SUCH SOURCE HAS BEEN CATALOGUED.", "os")
+    io.pause()
+    io.say("and yet. you put your eye to the tube and there it is, exactly "
+           "where forty years of your own handwriting says it should be. "
+           "the archive is wrong. you are looking at the proof. the proof "
+           "is very small and very far away, and no one else will ever "
+           "check.")
+    io.say("ANNOTATION LOGGED. RETENTION GRANTED — ONE EPOCH.", "os")
+    io.say("one epoch. the system's little mercy. as if it were embarrassed.",
+           "dim")
+    return state
+
+
+def _removed_past_scene(state: GameState, star: catalog.Star, io: IO) -> GameState:
+    io.say(f"EYE: SLEWING TO ARCHIVE COORDINATES — {star.id}", "os")
+    io.say("ARCHIVE: COORDINATES CORRESPOND TO NO CATALOGUED SOURCE.", "os")
+    io.pause()
+
+    if star.id == "VS-0088" and state.watch >= 7:
+        # the Lantern, the last look.
+        io.say("the field where the Lantern stood is not empty. empty you "
+               "know. empty is most of the sky and all of the corridor. "
+               "this is other. the eye slides off it the way a word, said "
+               "too many times, stops agreeing to mean.")
+        io.say("ANNOTATOR: SUBJECT — [no noun]", "os")
+        io.say("ANNOTATOR: MAGNITUDE — [declined]", "os")
+        io.say("you sit back from the eyepiece. you do not look again. "
+               "some instruments you only get to break once.")
+        return st.add_flag(state, "SAW_THE_OTHER")
+
+    io.say("nothing in the field. not a dimness where it burned down, not "
+           "a gap the right shape. the sky has closed over the place like "
+           "water over a stone that was never thrown.")
+    if star.name:
+        io.say(f"you say the name anyway, quietly, giving it one more "
+               f"witness: {star.name}.", "dim")
+    io.say("ANNOTATION LOGGED. ARCHIVE OBJECTS TO ANNOTATION.", "os")
+    return state
+
+
+def _front_scene(state: GameState, star: catalog.Star, io: IO) -> GameState:
+    io.say(f"EYE: SLEWING TO ARCHIVE COORDINATES — {star.id}", "os")
+    io.say("EYE: CANNOT ACQUIRE FOCUS. NO FOCAL PLANE.", "os")
+    io.pause()
+    io.say("you look into the east of the sector and there is nothing to "
+           "fail to see. dark is something — dark is distance and dust and "
+           "your own tired blood ticking in the retina. this is not dark. "
+           "the tube might as well be capped, except the cap would be "
+           "something too.")
+    io.say("you close the shutter. your hands do it without being asked.")
+    return st.add_flag(state, "EYED_THE_FRONT")

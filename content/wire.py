@@ -1,0 +1,169 @@
+"""LISTEN — the wire. The station's ear on what remains of everyone.
+
+The wire is used sparingly and that is by design: most watches it
+offers nothing but the old hiss, and the observer knows better than to
+make a habit of hoping. The escalation runs: a dead enclave's beacon,
+the beacon unhappening, the station's own voice coming back wrong, and
+then — twice — address.
+"""
+
+from __future__ import annotations
+
+from engine import draw, state as st
+from engine.io import IO
+from engine.state import GameState
+
+
+def _noise(seed: int, n: int, lo: int = 0, hi: int = 3) -> list[int]:
+    span = hi - lo + 1
+    return [
+        lo + (((i + 3) * (2 * seed + 1) * 2654435761) >> 11) % span
+        for i in range(n)
+    ]
+
+
+def _strip(io: IO, levels: list[int]) -> None:
+    io.art(["  " + draw.render_strip(levels)])
+
+
+def listen(state: GameState, io: IO) -> GameState:
+    io.say("WIRE: OPEN. ALL REGISTERED BANDS.", "os")
+    io.pause()
+    scene = _SCENES.get(state.watch, _scene_hiss)
+    return scene(state, io)
+
+
+def _scene_hiss(state: GameState, io: IO) -> GameState:
+    _strip(io, _noise(state.watch, 48))
+    io.say("hiss. the same hiss the first keeper heard, the exhaled "
+           "breath of everything that ever burned. you listen the way "
+           "other people used to sit by the sea.")
+    io.say("WIRE: CARRIER ONLY. NO TRAFFIC.", "os")
+    return state
+
+
+def _scene_hollow_hill(state: GameState, io: IO) -> GameState:
+    _strip(io, _noise(2, 16) + [5, 2, 5, 2, 4, 1, 5, 2] * 2 + _noise(5, 16))
+    io.say("BAND 9 — REGISTERED BEACON: HOLLOW HILL ENCLAVE.", "os")
+    io.pause()
+    io.say("the Hollow Hill loop. a woman's voice, nine hundred years "
+           "dead, reading the all-clear in a language you had to learn "
+           "from a grammar book. safe harbour, she says, more or less. "
+           "come in slowly. mind the shoals.")
+    io.say("nobody has gone in slowly for centuries. the tape survived "
+           "the town. you have long since stopped deciding whether that "
+           "is terrible or kind.")
+    io.say("WIRE: TRAFFIC LOGGED. LOOP INTEGRITY 61% AND FALLING.", "os")
+    return st.add_flag(state, "HEARD_HOLLOW")
+
+
+def _scene_unregistered(state: GameState, io: IO) -> GameState:
+    flat = [1] * 10
+    gap = [0, 0, 0]
+    _strip(io, flat + gap + flat + gap + [1] * 22)
+    io.say("BAND 9 —", "os")
+    io.say("WIRE: NO REGISTERED BEACON ON THIS BAND.", "os")
+    io.say("ARCHIVE: NO BEACON HAS EVER BEEN REGISTERED ON THIS BAND.", "os")
+    io.pause()
+    if st.has_flag(state, "HEARD_HOLLOW"):
+        io.say("you sat here two watches ago and listened to her read the "
+               "all-clear. you could hum the cadence of it now. the "
+               "archive holds no tape, no town, no woman. the hiss where "
+               "her voice was has edges, like a room with the furniture "
+               "taken out but the dents still in the carpet.")
+    else:
+        io.say("the hiss on band nine is wrong in a way you cannot put "
+               "your finger on — structured, like silence poured into a "
+               "mould of something. you find you do not want to know the "
+               "shape, and you note that wanting in the log, because "
+               "noting things is the whole of what you are for.")
+    io.say("WIRE: BAND CLOSED AT OBSERVER REQUEST.", "os")
+    return st.add_flag(state, "HEARD_UNHAPPENING")
+
+
+def _scene_echo(state: GameState, io: IO) -> GameState:
+    half = _noise(11, 22)
+    _strip(io, half + [2, 2] + list(reversed(half)))
+    io.say("WIRE: OWN CARRIER DETECTED — BEARING EAST.", "os")
+    io.say("WIRE: PROPAGATION DELAY 3.1 SECONDS. NO REFLECTOR AT RANGE.", "os")
+    io.pause()
+    io.say("the station's own signature, coming back out of the east "
+           "three seconds late. there is nothing out there to bounce off. "
+           "you check the delay four times. the fourth time it is 2.9.")
+    io.say("something is learning the shape of your voice, or the sky "
+           "has grown a wall, and you honestly could not say which "
+           "thought you prefer. you switch off the repeater. the echo "
+           "continues for a further two seconds. then it stops, which is "
+           "worse, because stopping means noticing.")
+    io.say("WIRE: REPEATER OFFLINE. LOG AMENDED.", "os")
+    return st.add_flag(state, "HEARD_ECHO")
+
+
+def _latest_journal_line(state: GameState) -> str | None:
+    if not state.journal:
+        return None
+    return state.journal[-1].text
+
+
+def _scene_first_address(state: GameState, io: IO) -> GameState:
+    half = [0, 2, 0, 3, 0, 2] * 3
+    _strip(io, half + [6] + list(reversed(half)))
+    io.say("WIRE: TRAFFIC. BAND UNNUMBERED.", "os")
+    io.pause()
+    line = _latest_journal_line(state)
+    if line:
+        spoken = draw.erase_words(line, 0.3, seed=state.watch)
+        io.say("a voice. not the hiss arranging itself into a voice — a "
+               "voice, level, unhurried, without breath where breath "
+               "should be. it says:")
+        io.say(f"    {spoken}", "alert")
+        io.say("your own words. the ones you wrote by hand, in the "
+               "journal, which has no wire to it and no eyes on it and "
+               "has never left the drawer.")
+    else:
+        io.say("a voice. not the hiss arranging itself into a voice — a "
+               "voice, level, unhurried, without breath where breath "
+               "should be. it reads back your last sector report, "
+               "verbatim, in the flat tone of a man counting stairs in "
+               "the dark.")
+        io.say("    NO CHANGE. NO ACTION FOLLOWS.", "alert")
+    io.say("then the carrier folds shut. the hiss comes back like water "
+           "closing. you sit for a long time with your hand on the gain, "
+           "not turning it up.")
+    io.say("WIRE: TRAFFIC COULD NOT BE LOGGED. NO SOURCE OF RECORD.", "os")
+    return st.add_flag(state, "ADDRESSED_ONCE")
+
+
+def _scene_second_address(state: GameState, io: IO) -> GameState:
+    _strip(io, [0] * 18 + [7] + [0] * 18)
+    io.say("WIRE: TRAFFIC. ALL BANDS AT ONCE.", "os")
+    io.pause()
+    io.say("the voice does not bother with the hiss tonight. it is "
+           "simply present, the way the cold is present, on every band, "
+           "under every band, in the bones of the set. it says:")
+    io.say("    REMY.", "alert")
+    io.say("    REMY. THE COUNT IS NEARLY RIGHT.", "alert")
+    io.pause(0.8)
+    io.say("Remy was the first keeper. Remy is four words of marginalia "
+           "and a grave you have never found. you are not Remy. you know "
+           "your own name; you wrote it in the sign-in book tonight, the "
+           "way you have ten thousand times.")
+    io.say(f"you check the sign-in book. it says REMY, in your "
+           f"handwriting, all the way down every page, and you cannot "
+           f"now entirely hear the name “{state.observer}” in "
+           f"your own head without it sounding like something you were "
+           f"holding for a stranger.", "dim")
+    io.say("the carrier stays open. it is waiting. the set has never "
+           "once waited in forty years.")
+    io.say("WIRE: CHANNEL HELD OPEN. THE COMMAND 'ANSWER' IS RECOGNISED.",
+           "os")
+    return st.add_flag(state, "QUESTION_ASKED")
+
+
+_SCENES = {
+    2: _scene_hollow_hill,
+    4: _scene_unregistered,
+    5: _scene_echo,
+    6: _scene_first_address,
+    7: _scene_second_address,
+}

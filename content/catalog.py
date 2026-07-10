@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from engine.state import GameState
+from engine.state import FINAL_WATCH, GameState
 
 SKY_WIDTH = 60
 SKY_HEIGHT = 12
@@ -20,7 +20,7 @@ SKY_HEIGHT = 12
 # The front crosses the sector on the final watch and takes the eastern
 # third of the plot with it — stars, grain, and the border alike.
 FRONT_RECT = (40, 0, 59, 11)
-FRONT_WATCH = 7
+FRONT_WATCH = FINAL_WATCH
 
 
 @dataclass(frozen=True)
@@ -39,15 +39,15 @@ ALL: tuple[Star, ...] = (
     Star("VS-0001", 8, 6, 2, None, "the first entry",
          "oldest line in the catalogue. the margin holds four words in "
          "the first keeper's hand: STILL THERE. STILL HERE."),
-    Star("VS-0088", 22, 3, 1, 6, "the Lantern",
+    Star("VS-0088", 22, 3, 1, 8, "the Lantern",
          "brightest source in the sector. every keeper has shown it to "
          "someone once. there is no one left to show it to, and it is "
          "still the first place your eye goes."),
-    Star("VS-0141", 47, 8, 2, 5, "Weir's Star",
+    Star("VS-0141", 47, 8, 2, 6, "Weir's Star",
          "named for the keeper who died in the dome chair with the "
          "eyepiece still warm. the Bureau let the name stand. it was "
          "cheaper than an inquiry."),
-    Star("VS-0202", 15, 9, 2, 4, "the Pilgrim",
+    Star("VS-0202", 15, 9, 2, 5, "the Pilgrim",
          "proper motion too fast for a star, too steady for a ship. "
          "your first accession, forty years ago. you were proud of it. "
          "you are still proud of it."),
@@ -57,27 +57,38 @@ ALL: tuple[Star, ...] = (
     Star("VS-0302", 35, 5, 3, None, "",
          "western companion of VS-0301. it continues to orbit. the "
          "archive is no longer prepared to say what."),
+    Star("VS-0350", 27, 6, 2, 7, "the Furnaces",
+         "three points resolved as one to the naked eye. the old books "
+         "say they were lit, not born — the last great work, back when "
+         "the species still built at that size. the archive files this "
+         "under folklore. the archive was not there."),
+    Star("VS-0527", 9, 0, 2, None, "Candle Row",
+         "the surviving dense field. keepers used to rest their eyes on "
+         "it between counts — a memory of what the whole sky was like, "
+         "kept small, like a coal carried in a tin."),
     # ── the numbered sky ──────────────────────────────────────────────
     Star("VS-0117", 4, 2, 3, None),
     Star("VS-0126", 11, 4, 3, None),
     Star("VS-0135", 18, 7, 3, None),
     Star("VS-0158", 26, 10, 3, 6),
-    Star("VS-0163", 29, 2, 2, 6),
-    Star("VS-0189", 38, 9, 3, 5),
+    Star("VS-0163", 29, 2, 2, 7),
+    Star("VS-0189", 38, 9, 3, 6),
     Star("VS-0214", 42, 4, 3, 5),
-    Star("VS-0227", 45, 1, 2, 5),
+    Star("VS-0227", 45, 1, 2, 6),
     Star("VS-0240", 50, 6, 3, 4),
     Star("VS-0256", 53, 3, 2, 4),
-    Star("VS-0261", 57, 9, 3, 4),
+    Star("VS-0261", 57, 9, 3, 5),
     Star("VS-0288", 6, 11, 3, 3),
-    Star("VS-0299", 24, 0, 3, 3),
+    Star("VS-0299", 24, 0, 3, 4),
     Star("VS-0326", 55, 0, 3, 2),
     Star("VS-0417", 58, 11, 3, 2),
-    Star("VS-0433", 2, 8, 3, 6),
-    Star("VS-0451", 13, 1, 3, 6),
-    Star("VS-0468", 31, 8, 3, 6),
-    Star("VS-0479", 40, 11, 3, 6),
+    Star("VS-0433", 2, 8, 3, 7),
+    Star("VS-0451", 13, 1, 3, 7),
+    Star("VS-0468", 31, 8, 3, 8),
+    Star("VS-0479", 40, 11, 3, 8),
     Star("VS-0490", 20, 5, 3, None),
+    Star("VS-0503", 44, 7, 3, 8),
+    Star("VS-0512", 51, 10, 3, 8),
 )
 
 

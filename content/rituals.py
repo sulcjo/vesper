@@ -62,7 +62,7 @@ def _clock(state: GameState, io: IO, warned: bool) -> None:  # noqa: ARG001
            "shy of its temper. the numerals are in a script nobody has "
            "read aloud in living memory, which is fine. the clock is not "
            "for reading. it is for the tick.")
-    if state.watch >= 5:
+    if state.watch >= 6:
         io.say("the tick divides the dark into pieces small enough to "
                "carry. lately you have caught yourself counting along, "
                "and stopping yourself, because counting along is what "
@@ -73,7 +73,7 @@ def _clock(state: GameState, io: IO, warned: bool) -> None:  # noqa: ARG001
 
 def _plant(state: GameState, io: IO, warned: bool) -> None:  # noqa: ARG001
     io.say("PLANT ROOM — WATERING", "os")
-    if state.watch >= 6:
+    if state.watch >= 8:
         io.say("there is a new leaf. now. of all the epochs it could have "
                "chosen, with the east of the sky standing open like a "
                "removed tooth, the plant has decided on a new leaf, pale "

@@ -49,7 +49,7 @@ def _keeper(state: GameState, io: IO) -> None:
     io.say("the count was kept. all the way to the end of counting, "
            "the count was kept, and it was kept by you.")
     io.say("", "prose")
-    io.say("EPOCH 71,206. CATALOGUE CLOSED IN GOOD ORDER.", "os")
+    io.say("EPOCH 71,208. CATALOGUE CLOSED IN GOOD ORDER.", "os")
     io.say("OBSERVER OF RECORD: PRESENT.", "os")
 
 
@@ -83,7 +83,7 @@ def _quiet(state: GameState, io: IO) -> None:
            "snowfall is gentle: not out of kindness. out of "
            "thoroughness.")
     io.say("", "prose")
-    io.say(f"EPOCH 71,206. NO REPORT ON FILE.", "os")
+    io.say(f"EPOCH 71,208. NO REPORT ON FILE.", "os")
     io.say("NO OBSERVER OF RECORD. NO OBSERVER OF RECORD HAS EVER "
            "BEEN AT VESPER STATION.", "os")
     io.say("NO ACTION FOLLOWS.", "os")

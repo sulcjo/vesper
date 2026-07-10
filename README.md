@@ -5,7 +5,7 @@
 The universe is old. The sky is mostly embers, the enclaves stopped
 answering centuries ago, and one observatory still keeps the sky
 catalogue — because the watch has always been kept. You are the
-observer. Seven watches remain.
+observer, fifth keeper of the Vesper catalogue. Nine watches remain.
 
 The scans have begun returning removals: sources that are not dying,
 but un-having-been. The archive agrees they never existed. Your
@@ -22,7 +22,8 @@ python3 vesper.py --fast    # no typewriter pacing (or VESPER_FAST=1)
 ```
 
 Progress autosaves after every command (to `~/.vesper/`, override with
-`VESPER_HOME`). A watch takes a few minutes; a full game under an hour.
+`VESPER_HOME`). A watch takes a few minutes; a full game runs about an
+hour, more if you read the old keepers' volumes — and you should.
 Type `HELP` at the prompt for the station's boards. `Ctrl+C` skips the
 typewriter effect for the current passage.
 

@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field, replace
 
 TENDABLES = ("GENERATOR", "CLOCK", "PLANT")
-FINAL_WATCH = 7
+FINAL_WATCH = 9
 GENERATOR_WARNING_FROM_WATCH = 4
 GENERATOR_WARNING_AGE = 2  # watches since last tending before it complains
 GENERATOR_FATAL_STRIKES = 2  # ignored-warning sleeps before the cold wins

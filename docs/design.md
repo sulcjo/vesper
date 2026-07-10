@@ -34,10 +34,20 @@ game. It manifests only as absence, contradiction, and, twice, address.
 4. **Rare, fair deaths.** Two, both preceded by explicit repeated
    warnings. Death is written as an ending, not a game-over screen.
 
-## Structure: seven watches
+## Structure: nine watches
 
 Wake → rituals and chores → SCAN → DIFF → optionally EYE a designation
 → sometimes LISTEN → REPORT to the Bureau → JOURNAL → SLEEP.
+
+The wire ladder: Hollow Hill's loop (2), the band unregistered (4),
+the Pulse alive (5), the station's own echo (6), the Pulse counting
+down (7), the first address in the player's own journal words (8),
+the second address by the wrong name (9).
+
+World-building lives in two channels only: the per-watch WALK scenes
+(5 rooms × 9 watches) and the SHELF — four dead keepers' volumes
+(Remy, Sever, Okonkwo, Weir) that tell the history of the station and
+the species' long evening sideways, never as exposition.
 
 Signature mechanic: **the journal quotes you back.** JOURNAL WRITE
 takes the player's own free-typed entries; later watches replay them
@@ -47,9 +57,9 @@ catalogue after removal ("OBSERVER ANNOTATION RETAINED").
 
 ### Commands
 
-HELP STATUS SCAN DIFF EYE <id> LISTEN REPORT
+HELP STATUS SCAN DIFF EYE <id> LISTEN REPORT SHELF [keeper]
 JOURNAL [WRITE|READ|BURN] WALK <place> TEND <thing> SLEEP QUIT
-Late game: SUIT, OUTSIDE (dangerous, warned).
+Late game (watch 8+): SUIT, OUTSIDE (dangerous, warned).
 
 Places: dome, corridor, quarters, plant room, generator room.
 Tendables: generator, clock, plant.
@@ -70,7 +80,7 @@ Tendables: generator, clock, plant.
 - OUTSIDE — going out with incomplete suit checks after being told, or
   staying past the third warning.
 
-### Endings (watch 7)
+### Endings (watch 9)
 
 - KEEPER — file the final report; the catalogue's last entry is an
   observer. A sliver of grace is permitted here, no more.

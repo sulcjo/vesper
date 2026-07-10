@@ -84,7 +84,7 @@ def _removed_past_scene(state: GameState, star: catalog.Star, io: IO) -> GameSta
     io.say("ARCHIVE: COORDINATES CORRESPOND TO NO CATALOGUED SOURCE.", "os")
     io.pause()
 
-    if star.id == "VS-0088" and state.watch >= 7:
+    if star.id == "VS-0088" and state.watch >= 9:
         # the Lantern, the last look.
         io.say("the field where the Lantern stood is not empty. empty you "
                "know. empty is most of the sky and all of the corridor. "
@@ -96,6 +96,16 @@ def _removed_past_scene(state: GameState, star: catalog.Star, io: IO) -> GameSta
                "some instruments you only get to break once.")
         return st.add_flag(state, "SAW_THE_OTHER")
 
+    if star.id == "VS-0350":
+        io.say("the Furnaces' field, empty. whatever they were — born "
+               "or built, stars or the species' one cathedral — the "
+               "question has been settled in the oldest way: by "
+               "removing the subject. even the folklore file is gone "
+               "from the archive. you recite what you remember of it "
+               "into the annotation field, deliberately, an old man "
+               "smuggling a legend across a border.")
+        io.say("ANNOTATION LOGGED. ARCHIVE OBJECTS TO ANNOTATION.", "os")
+        return state
     io.say("nothing in the field. not a dimness where it burned down, not "
            "a gap the right shape. the sky has closed over the place like "
            "water over a stone that was never thrown.")

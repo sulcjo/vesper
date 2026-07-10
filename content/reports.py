@@ -63,6 +63,19 @@ def _receipt(state: GameState, io: IO) -> None:
         return
     if watch == 4:
         io.say("BUREAU RECEIPT: REPORT ACCEPTED INTO REVIEW QUEUE.", "os")
+        io.say("BUREAU RECEIPT: QUEUE POSITION 3,977. ESTIMATED REVIEW: —",
+               "os")
+        io.say("NO ACTION FOLLOWS.", "os")
+        io.say("position three thousand nine hundred seventy-seven. the "
+               "queue has stood at 4,112 since before your watch began. "
+               "nothing reviews. so the queue is not being worked from "
+               "the front. it is being shortened from somewhere else — "
+               "reports, and the stations that wrote them, leaving the "
+               "line the way the sources leave the sky: without ever "
+               "having stood in it.", "dim")
+        return
+    if watch == 5:
+        io.say("BUREAU RECEIPT: REPORT ACCEPTED INTO REVIEW QUEUE.", "os")
         io.say(f"BUREAU RECEIPT: LOGGED AT EPOCH {epoch(state) - 1:,}.", "os")
         io.say("NO ACTION FOLLOWS.", "os")
         io.say("logged at the previous epoch. before you wrote it. you "
@@ -70,7 +83,7 @@ def _receipt(state: GameState, io: IO) -> None:
                "carefully, the way a man steps over a hole he has "
                "decided not to see.", "dim")
         return
-    if watch == 5:
+    if watch == 6:
         io.say("BUREAU RECEIPT: REPORT ACCEPTED.", "os")
         io.say("BUREAU RECEIPT: ADVISORY — NO OBSERVER OF RECORD AT "
                "VESPER STATION.", "os")
@@ -81,7 +94,20 @@ def _receipt(state: GameState, io: IO) -> None:
                "advisory field. the field accepts it and grows no "
                "larger.", "dim")
         return
-    if watch == 6:
+    if watch == 7:
+        io.say("BUREAU RECEIPT: RECEIVED.", "os")
+        io.pause(0.5)
+        io.say("the receipt arrives in the wrong characters. not "
+               "garbled — set, formal, in the closed script that runs "
+               "around the face of your clock, the one nobody living "
+               "reads. the terminal renders it without complaint, as "
+               "if it had been waiting all these years to be asked.")
+        io.say("you copy the shapes into the paper log by hand, in case "
+               "they matter, in case they are the review, arrived at "
+               "last, in the language the Bureau kept for endings.",
+               "dim")
+        return
+    if watch == 8:
         io.say("TRANSMISSION COMPLETE. AWAITING RECEIPT ...", "os")
         io.pause(0.9)
         io.say("nothing comes back. not a refusal — a refusal would be "

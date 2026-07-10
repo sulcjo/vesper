@@ -11,7 +11,7 @@ from engine import state as st
 from engine.io import IO
 from engine.state import FINAL_WATCH, GameState
 
-_FADE_BASE = {5: 0.15, 6: 0.35, 7: 0.55}
+_FADE_BASE = {6: 0.12, 7: 0.25, 8: 0.4, 9: 0.55}
 
 
 def journal_fade(current_watch: int, entry_watch: int) -> float:
@@ -99,6 +99,23 @@ def _wake_4(state: GameState, io: IO) -> None:  # noqa: ARG001
 
 
 def _wake_5(state: GameState, io: IO) -> None:  # noqa: ARG001
+    io.say("you woke thinking of Okonkwo, your keeper before Weir's, "
+           "the one who trained you. sixty days of him saying the same "
+           "sentence at the same hour: the instrument is the station; "
+           "the observer is the instrument's conscience. you thought he "
+           "was being poetic. he was being technical. it took you a "
+           "decade to hear the difference.")
+    io.say("in his day there were still four beacons on the wire and a "
+           "supply shuttle every hundred epochs. the shuttle stopped in "
+           "his lifetime. he logged its non-arrival every hundredth "
+           "epoch for the rest of his watch, without comment, a man "
+           "holding a door for someone who has plainly gone home "
+           "another way. you keep meaning to take that page down from "
+           "the shelf. tonight, maybe, if the boards run quiet. "
+           "(the SHELF holds the old keepers' volumes.)")
+
+
+def _wake_6(state: GameState, io: IO) -> None:  # noqa: ARG001
     io.say("you woke reaching for a name and it was not there. not a "
            "star's — a person's. the pier, the water, the sun on the "
            "water, the laugh — all present, filed, vivid. the name has "
@@ -106,13 +123,26 @@ def _wake_5(state: GameState, io: IO) -> None:  # noqa: ARG001
            "it, and it keeps being a hole.")
     io.say("you sat on the edge of the cot and made yourself say the "
            "names you do have. your own. the plant's, which you have "
-           "never told anyone. Weir. Remy. the count came up short and "
-           "you got dressed anyway, because the sky does not wait on "
-           "grief, especially not now, when it is doing so much of its "
-           "own vanishing.")
+           "never told anyone. Weir. Okonkwo. Sever. Remy. the count "
+           "came up short and you got dressed anyway, because the sky "
+           "does not wait on grief, especially not now, when it is "
+           "doing so much of its own vanishing.")
 
 
-def _wake_6(state: GameState, io: IO) -> None:  # noqa: ARG001
+def _wake_7(state: GameState, io: IO) -> None:  # noqa: ARG001
+    io.say("in the dream the counting had a direction. you woke before "
+           "you could hear which, with the blanket already off, and lay "
+           "there doing the sums of an old man's night: how many "
+           "watches you have kept, how many are left in you, and how "
+           "it happens that the second number has started feeling like "
+           "the sky's decision rather than your body's.")
+    io.say("the station is quieter than its own inventory of noises. "
+           "you have begun to catch the walls at it — holding still, "
+           "the way a room holds still when it has just stopped "
+           "talking about you.")
+
+
+def _wake_8(state: GameState, io: IO) -> None:  # noqa: ARG001
     io.say("frost on the inside of the corridor now, fine as breath on "
            "glass. the station is not colder. you checked the figures "
            "twice. it is as if the walls have started believing the "
@@ -128,7 +158,7 @@ def _wake_6(state: GameState, io: IO) -> None:  # noqa: ARG001
            "with this in it.", "dim")
 
 
-def _wake_7(state: GameState, io: IO) -> None:  # noqa: ARG001
+def _wake_9(state: GameState, io: IO) -> None:  # noqa: ARG001
     io.say("you do not remember deciding to wake. you were asleep, and "
            "then you were standing in the dome already dressed, hand "
            "on the shutter crank, with the tea going cold on the rail "
@@ -143,7 +173,7 @@ def _wake_7(state: GameState, io: IO) -> None:  # noqa: ARG001
 
 
 _WAKES = {1: _wake_1, 2: _wake_2, 3: _wake_3, 4: _wake_4, 5: _wake_5,
-          6: _wake_6, 7: _wake_7}
+          6: _wake_6, 7: _wake_7, 8: _wake_8, 9: _wake_9}
 
 
 def close(state: GameState, io: IO) -> None:
@@ -162,11 +192,20 @@ def close(state: GameState, io: IO) -> None:
            "again you will hear it through the frame of the cot, and "
            "be up, and be useful. useful is the whole of the plan now "
            "and it has the great merit of fitting on one line.",
-        5: "in the dark you go through the pier again: boards, water, "
+        5: "you fall asleep listening for the Pulse through the floor, "
+           "which is not possible, and hearing it anyway, which is "
+           "what listening is for. four seconds. four seconds. the "
+           "house of the species, sleeping, but breathing.",
+        6: "in the dark you go through the pier again: boards, water, "
            "sun, laugh. you set the missing name gently aside, the "
            "way you would sheet over a chair, and sleep in the room "
            "with it.",
-        6: "the station ticks and settles around you, kept and "
+        7: "you wind the clock before bed though it is not the hour "
+           "for it, eleven turns, and lie down inside its tick as if "
+           "drawing a chalk line around yourself. count that, you "
+           "think at the ceiling, at the east, at nothing. it is an "
+           "honest number and it is mine.",
+        8: "the station ticks and settles around you, kept and "
            "keeping. whatever is standing open in the east, it can "
            "stand open one more night without you looking at it. "
            "this is either courage or its house-trained cousin. you "

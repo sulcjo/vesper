@@ -99,6 +99,46 @@ def _scene_echo(state: GameState, io: IO) -> GameState:
     return st.add_flag(state, "HEARD_ECHO")
 
 
+def _scene_pulse(state: GameState, io: IO) -> GameState:
+    _strip(io, [0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0] * 4)
+    io.say("BAND 1 — REGISTERED: THE PULSE. CORE ENCLAVE MASTER CLOCK.",
+           "os")
+    io.pause()
+    io.say("the Pulse. one soft knock every four seconds, the Core "
+           "enclave's master clock, counting epochs for a civilisation "
+           "that has mostly stopped opening its mail. it is the oldest "
+           "continuous signal in the sky. Okonkwo used to call it the "
+           "pilot light.")
+    io.say("nobody living has raised the Core itself. but the clock is "
+           "wound, or winds itself, and out of everything on the wire "
+           "it is the one sound that has never once been strange. you "
+           "let a dozen knocks go by, the way you would stand in a "
+           "doorway listening to a house sleep.")
+    io.say("WIRE: PULSE COUNT AGREES WITH STATION COUNT. ALL CLOCKS "
+           "CONCUR.", "os")
+    return st.add_flag(state, "HEARD_PULSE")
+
+
+def _scene_pulse_wrong(state: GameState, io: IO) -> GameState:
+    _strip(io, [0, 0, 4, 0, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 4, 0] * 2
+           + [4, 4] + [0] * 6)
+    io.say("BAND 1 — REGISTERED: THE PULSE.", "os")
+    io.pause()
+    io.say("the knock is there, and then the knock is early, and then "
+           "it is two knocks close together like a heart missing its "
+           "footing. you time it against the wound clock for an hour. "
+           "there is no drift. there is arithmetic — the intervals are "
+           "shortening by a fixed ratio, patient as interest.")
+    if st.has_flag(state, "HEARD_PULSE"):
+        io.say("the pilot light is not going out. it is being turned "
+               "down, by the hand of nothing, on a schedule. a clock "
+               "cannot dread. you have the dread on, as it were, its "
+               "behalf; that is what an observer is for.")
+    io.say("WIRE: PULSE COUNT NO LONGER AGREES WITH STATION COUNT.", "os")
+    io.say("WIRE: THE PULSE COUNT IS DECREASING.", "alert")
+    return st.add_flag(state, "HEARD_PULSE_WRONG")
+
+
 def _latest_journal_line(state: GameState) -> str | None:
     if not state.journal:
         return None
@@ -163,7 +203,9 @@ def _scene_second_address(state: GameState, io: IO) -> GameState:
 _SCENES = {
     2: _scene_hollow_hill,
     4: _scene_unregistered,
-    5: _scene_echo,
-    6: _scene_first_address,
-    7: _scene_second_address,
+    5: _scene_pulse,
+    6: _scene_echo,
+    7: _scene_pulse_wrong,
+    8: _scene_first_address,
+    9: _scene_second_address,
 }

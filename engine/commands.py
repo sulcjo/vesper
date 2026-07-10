@@ -7,7 +7,16 @@ Signals: None (keep going), "sleep" (end the watch), "quit" (leave),
 
 from __future__ import annotations
 
-from content import catalog, eyepiece, places, reports, rituals, watches, wire
+from content import (
+    catalog,
+    eyepiece,
+    places,
+    reports,
+    rituals,
+    shelf,
+    watches,
+    wire,
+)
 from engine import draw, state as st, term
 from engine.io import IO
 from engine.state import FINAL_WATCH, GameState
@@ -47,14 +56,15 @@ def _help(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
         ("LISTEN", "open the wire"),
         ("REPORT", "file the sector report to the Bureau"),
         ("JOURNAL WRITE|READ", "the book kept by hand"),
+        ("SHELF [keeper]", "the old keepers' volumes"),
         ("WALK <place>", "dome, corridor, quarters, plant, generator"),
         ("TEND <thing>", "generator, clock, plant"),
         ("STATUS", "the station and the watch"),
         ("SLEEP", "end the watch"),
         ("QUIT", "leave the terminal (the watch is saved)"),
     ]
-    if state.watch >= 6:
-        entries.insert(8, ("SUIT / OUTSIDE", "exterior work. mind the checks"))
+    if state.watch >= places.OUTSIDE_FROM_WATCH:
+        entries.insert(9, ("SUIT / OUTSIDE", "exterior work. mind the checks"))
     if st.has_flag(state, "QUESTION_ASKED"):
         entries.insert(0, ("ANSWER", "the channel is held open"))
     for name, blurb in entries:
@@ -151,7 +161,33 @@ def _diff(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
                "orbiting a mass that is no longer permitted to have "
                "been. the numbers still balance. they balance around a "
                "held breath.")
-    elif state.watch >= 5:
+    elif state.watch == 5:
+        io.say("the Pilgrim is in the column tonight. your first "
+               "accession. you were twenty-six; you measured its "
+               "motion four nights running before you dared claim it, "
+               "and Okonkwo signed the accession with both your names "
+               "because, he said, a first star should be witnessed "
+               "twice. the archive now witnesses it zero times. you "
+               "make up the difference.")
+    elif state.watch == 6:
+        io.say("Weir's Star. they named it the day they buried her — "
+               "the Bureau's one recorded act of sentiment, a woman's "
+               "whole watch folded into a designation. the archive has "
+               "tonight unfolded it. there is no Weir's Star; there "
+               "was, accordingly, no Weir. the chair arm in the dome "
+               "continues to hold two initials, cut deep, in a medium "
+               "that has never heard of the archive.")
+    elif state.watch == 8:
+        io.say("the Lantern. the first place your eye goes. the first "
+               "star every keeper showed to every visitor the station "
+               "ever had, back when it had them — the one light in "
+               "the sector that never needed the trick of looking "
+               "away. the column holds it now between VS-0479 and "
+               "VS-0512 as if it were a line item. you initial the "
+               "diff, because the duty is the duty, and your pen "
+               "presses hard enough to be read from the back of the "
+               "page.")
+    elif state.watch >= 7:
         io.say("you no longer check the archive against your journal. "
                "you check your journal against your memory, and you do "
                "it with the door of the dome bolted, quietly, like a "
@@ -253,6 +289,10 @@ def _journal_burn(state: GameState, io: IO) -> Result:
     return st.set_ending(state, "QUIET"), "ended"
 
 
+def _shelf(state: GameState, rest: str, io: IO) -> Result:
+    return shelf.open_shelf(state, rest, io), None
+
+
 def _walk(state: GameState, rest: str, io: IO) -> Result:
     return places.walk(state, rest, io), None
 
@@ -307,6 +347,7 @@ _COMMANDS = {
     "LISTEN": _listen,
     "REPORT": _report,
     "JOURNAL": _journal,
+    "SHELF": _shelf,
     "WALK": _walk,
     "TEND": _tend,
     "SUIT": _suit,

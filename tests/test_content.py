@@ -24,7 +24,7 @@ def test_positions_are_unique_and_inside_the_plot():
 def test_removals_are_scheduled_on_playable_watches():
     for star in catalog.ALL:
         if star.gone is not None:
-            assert 2 <= star.gone <= 6
+            assert 2 <= star.gone <= FINAL_WATCH - 1
 
 
 def test_every_watch_after_the_first_loses_something():
@@ -82,29 +82,35 @@ def _play(script: list[str], answers: list[str] | None = None):
 FULL_WATCH = ["SCAN", "DIFF", "EYE the Lantern", "LISTEN",
               "TEND GENERATOR", "REPORT", "SLEEP"]
 
+# survive to watch 8 with minimal effort: tend the generator just
+# often enough that no two consecutive sleeps carry an active warning
+_TO_WATCH_8 = (["SLEEP"] * 3
+               + ["TEND GENERATOR", "SLEEP", "SLEEP"]
+               + ["TEND GENERATOR", "SLEEP", "SLEEP"])
+
 
 def test_keeper_ending_full_dutiful_run():
-    script = FULL_WATCH * 6 + ["SCAN", "DIFF", "REPORT", "SLEEP"]
+    script = FULL_WATCH * 8 + ["SCAN", "DIFF", "REPORT", "SLEEP"]
     state, io = _play(script, answers=["the count is mine.", "."])
     assert state.ending == "KEEPER"
     assert "STILL THERE. STILL HERE." in io.transcript()
 
 
 def test_quiet_ending_by_burning_the_journal():
-    script = FULL_WATCH * 6 + ["JOURNAL BURN"]
+    script = FULL_WATCH * 8 + ["JOURNAL BURN"]
     state, io = _play(script, answers=["BURN"])
     assert state.ending == "QUIET"
     assert "NO ACTION FOLLOWS." in io.transcript()
 
 
 def test_quiet_ending_by_lying_down_unreported():
-    script = FULL_WATCH * 6 + ["SLEEP"]
+    script = FULL_WATCH * 8 + ["SLEEP"]
     state, _ = _play(script)
     assert state.ending == "QUIET"
 
 
 def test_answer_ending_by_keying_the_send():
-    script = FULL_WATCH * 6 + ["LISTEN", "ANSWER"]
+    script = FULL_WATCH * 8 + ["LISTEN", "ANSWER"]
     state, io = _play(script, answers=["SEND"])
     assert state.ending == "ANSWER"
     assert "REMY" in io.transcript()
@@ -117,17 +123,14 @@ def test_cold_ending_after_two_ignored_warnings():
 
 
 def test_outside_ending_by_override():
-    script = (["SLEEP"] * 3
-              + ["TEND GENERATOR", "SLEEP", "SLEEP"]
-              + ["OUTSIDE", "OUTSIDE"])
+    script = _TO_WATCH_8 + ["OUTSIDE", "OUTSIDE"]
     state, io = _play(script)
     assert state.ending == "OUTSIDE"
     assert "OVERRIDE" in io.transcript()
 
 
 def test_outside_survivable_with_full_checks_and_sense():
-    script = (["SLEEP"] * 3
-              + ["TEND GENERATOR", "SLEEP", "SLEEP"]
+    script = (_TO_WATCH_8
               + ["SUIT SEALS", "SUIT AIR", "SUIT TETHER", "OUTSIDE",
                  "TEND GENERATOR", "SLEEP",
                  "SCAN", "DIFF", "REPORT", "SLEEP"])
@@ -136,10 +139,26 @@ def test_outside_survivable_with_full_checks_and_sense():
     assert st.has_flag(state, "WENT_OUTSIDE")
 
 
-def test_the_wire_quotes_the_journal_back_on_watch_six():
-    script = (FULL_WATCH * 5) + ["JOURNAL WRITE", "LISTEN"]
-    answers = ["the count is mine.", ".",  # watch-1 journal (unused ask)
-               "the plant has a new leaf tonight.", "."]
+def test_the_wire_quotes_the_journal_back_on_watch_eight():
+    script = (FULL_WATCH * 7) + ["JOURNAL WRITE", "LISTEN"]
+    answers = ["the plant has a new leaf tonight.", "."]
     state, io = _play(script, answers=answers)
     transcript = io.transcript()
     assert "TRAFFIC COULD NOT BE LOGGED" in transcript
+
+
+def test_shelf_lists_and_opens_the_volumes():
+    io = ScriptedIO()
+    state = st.new_game("Halvard")
+    state, _ = commands.dispatch(state, "SHELF", io)
+    assert "OKONKWO" in io.transcript()
+    state, _ = commands.dispatch(state, "SHELF REMY", io)
+    assert st.has_flag(state, "READ_REMY")
+    assert "STILL THERE. STILL HERE." in io.transcript()
+
+
+def test_the_pulse_goes_wrong_on_watch_seven():
+    script = FULL_WATCH * 6 + ["LISTEN"]
+    state, io = _play(script)
+    assert st.has_flag(state, "HEARD_PULSE_WRONG")
+    assert "DECREASING" in io.transcript()

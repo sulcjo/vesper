@@ -13,5 +13,10 @@ import sys
 
 from engine.shell import run
 
+
+def main() -> int:
+    return run(sys.argv[1:])
+
+
 if __name__ == "__main__":
-    sys.exit(run(sys.argv[1:]))
+    sys.exit(main())

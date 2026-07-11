@@ -8,6 +8,7 @@ Signals: None (keep going), "sleep" (end the watch), "quit" (leave),
 from __future__ import annotations
 
 from content import (
+    asides,
     catalog,
     eyepiece,
     places,
@@ -53,9 +54,10 @@ def dispatch(state: GameState, line: str, io: IO) -> Result:
         return state, None
     handler = _COMMANDS.get(cmd)
     if handler is None:
+        if cmd in asides.ASIDE_VERBS:
+            return asides.aside(state, cmd, io), None
         io.say(f"UNRECOGNISED: {cmd}", "os")
-        io.say("the terminal has never pretended to understand more "
-               "than it understands. HELP lists what it does.", "dim")
+        io.say(asides.unknown_line(state, cmd), "dim")
         return state, None
     return handler(state, rest, io)
 
@@ -67,7 +69,8 @@ def _help(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
     entries = [
         ("SCAN", "survey the sector; draw the plot"),
         ("DIFF", "compare tonight's plot against the archive"),
-        ("EYE <designation>", "put your own eye to a source"),
+        ("EYE <designation>", "your own eye on a source — the diff "
+         "lists them; a few you know by name"),
         ("LISTEN", "open the wire"),
         ("REPORT", "file the sector report to the Bureau"),
         ("JOURNAL WRITE|READ|COPY", "the book kept by hand"),
@@ -167,11 +170,12 @@ def _diff(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
     for i, star in enumerate(removals):
         shown = term.glitch(f"{star.id:<12}", severity=0.18,
                             seed=state.watch * 31 + i)
-        label = f" — {star.name}" if star.name else ""
         retained = catalog.is_retained(star, state)
         right = ("ANNOTATION RETAINED" if retained
                  else "ACCESSION IN YOUR HAND")
-        io.say(f"  {shown}     NO SUCH SOURCE          {right}{label}", "os")
+        io.say(f"  {shown}     NO SUCH SOURCE          {right}", "os")
+        if star.name:
+            io.say(f"               └ {star.name}", "os")
     io.say(f"REMOVALS THIS EPOCH: {len(removals)}. EXTINCTION EVENTS "
            f"LOGGED: 0.", "os")
     io.pause()
@@ -223,12 +227,22 @@ def _diff(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
 
 
 def _eye(state: GameState, rest: str, io: IO) -> Result:
+    if not rest.strip():
+        io.say("EYE: THE TUBE POINTS WHERE YOU TELL IT. GIVE IT A "
+               "DESIGNATION — THE DIFF LISTS THEM.", "os")
+        io.say("a few up there you could name in your sleep, and the "
+               "tube knows those names too.", "dim")
+        return state, None
     if catalog.by_id(rest) is not None:
         state = _spend(state, io)
     return eyepiece.look(state, rest, io), None
 
 
 def _listen(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
+    flag = f"LISTENED_{state.watch}"
+    if st.has_flag(state, flag):
+        return asides.listen_again(state, io), None
+    state = st.add_flag(state, flag)
     state = _spend(state, io)
     return wire.listen(state, io), None
 
@@ -259,6 +273,10 @@ def _journal_write(state: GameState, io: IO) -> GameState:
     lines: list[str] = []
     while True:
         line = io.ask("✎ ")
+        if getattr(io, "eof_reached", False):
+            # input ran dry mid-entry (Ctrl+D, exhausted pipe): keep
+            # what was written, discard the EOF sentinel, stop asking.
+            break
         if line.strip() == ".":
             break
         if not line.strip() and not lines:
@@ -374,12 +392,21 @@ def _walk(state: GameState, rest: str, io: IO) -> Result:
     if place == "PLANT ROOM":
         place = "PLANT"
     if place in places.PLACES:
+        flag = f"WALKED_{place}_{state.watch}"
+        if st.has_flag(state, flag):
+            return asides.walk_again(state, place, io), None
+        state = st.add_flag(state, flag)
         state = _spend(state, io)
     return places.walk(state, rest, io), None
 
 
 def _tend(state: GameState, rest: str, io: IO) -> Result:
-    if rest.strip().upper() in rituals.THINGS:
+    thing = rest.strip().upper()
+    if thing in rituals.THINGS:
+        flag = f"TENDED_{thing}_{state.watch}"
+        if st.has_flag(state, flag):
+            return asides.tend_again(state, thing, io), None
+        state = st.add_flag(state, flag)
         state = _spend(state, io)
     return rituals.tend(state, rest, io), None
 
@@ -406,6 +433,8 @@ def _answer(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
     io.say("type what you will send. an empty line sits back from the "
            "key.", "dim")
     words = io.ask("send ▸ ").strip()
+    if getattr(io, "eof_reached", False):
+        words = ""
     if not words:
         io.say("you take your hand off the key. the carrier stays open "
                "behind you all night, a door ajar in a house where "

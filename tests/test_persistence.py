@@ -105,3 +105,20 @@ def test_ledger_roundtrip_and_corruption_tolerance(home):
     assert [r["ending"] for r in runs] == ["KEEPER", "ANSWER"]
     persistence.ledger_path().write_text("{ broken", encoding="utf-8")
     assert persistence.load_ledger() == []
+
+
+def test_keepsake_written_numbered_and_holds_true_text(home):
+    import dataclasses
+    from engine.state import JournalEntry
+    game = st.new_game("Josef")
+    game = st.add_journal(game, "the kettle sang early and i let it.")
+    game = dataclasses.replace(game, watch=9)
+    game = st.set_ending(game, "KEEPER")
+    first = persistence.write_keepsake(game)
+    second = persistence.write_keepsake(game)
+    assert first.name == "keepsake-01.txt"
+    assert second.name == "keepsake-02.txt"
+    text = first.read_text(encoding="utf-8")
+    assert "the kettle sang early and i let it." in text
+    assert "Josef" in text
+    assert "somebody looked" in text

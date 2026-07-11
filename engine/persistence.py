@@ -160,3 +160,22 @@ def append_ledger(name: str, ending: str, watch: int) -> None:
         encoding="utf-8",
     )
     tmp.replace(ledger_path())
+
+
+def write_keepsake(state: GameState) -> Path | None:
+    """Leave the end-of-run paper record beside the save. Numbered so
+    repeat runs never overwrite each other. Never allowed to crash an
+    ending — returns None if the disk declines."""
+    from content import keepsake
+
+    try:
+        directory = save_dir()
+        directory.mkdir(parents=True, exist_ok=True)
+        number = 1
+        while (directory / f"keepsake-{number:02d}.txt").exists():
+            number += 1
+        path = directory / f"keepsake-{number:02d}.txt"
+        path.write_text(keepsake.compose(state), encoding="utf-8")
+        return path
+    except OSError:
+        return None

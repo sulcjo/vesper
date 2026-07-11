@@ -165,12 +165,14 @@ def _wake_4(state: GameState, io: IO) -> None:  # noqa: ARG001
 
 
 def _wake_5(state: GameState, io: IO) -> None:  # noqa: ARG001
-    io.say("you woke thinking of Okonkwo, your keeper before Weir's, "
-           "the one who trained you. sixty days of him saying the same "
-           "sentence at the same hour: the instrument is the station; "
-           "the observer is the instrument's conscience. you thought he "
-           "was being poetic. he was being technical. it took you a "
-           "decade to hear the difference.")
+    io.say("you woke thinking of Okonkwo — the keeper who trained you "
+           "when you first came up the scarp, a boy apprenticed two "
+           "watches of the book before your own began. sixty days of "
+           "him saying the same sentence at the same hour: the "
+           "instrument is the station; the observer is the "
+           "instrument's conscience. you thought he was being poetic. "
+           "he was being technical. it took you a decade to hear the "
+           "difference.")
     io.say("in his day there were still four beacons on the wire and a "
            "supply shuttle every hundred epochs. the shuttle stopped in "
            "his lifetime. he logged its non-arrival every hundredth "
@@ -239,17 +241,26 @@ def _wake_8(state: GameState, io: IO) -> None:  # noqa: ARG001
            "with this in it.", "dim")
 
 
-def _wake_9(state: GameState, io: IO) -> None:  # noqa: ARG001
+def _wake_9(state: GameState, io: IO) -> None:
     io.say("you do not remember deciding to wake. you were asleep, and "
            "then you were standing in the dome already dressed, hand "
            "on the shutter crank, with the tea going cold on the rail "
            "behind you like an offering to whoever you were yesterday.")
-    io.say("the east is in the room now. not visibly. the dome is "
-           "sealed and the shutter is shut and the east is in the room "
-           "the way winter is in a house, under the doors, in the "
-           "nails. tonight the sector gets its last honest count. "
-           "after that — the count is nearly right, the wire said. "
-           "it is your arithmetic. finish it or do not.")
+    if st.has_flag(state, "ADDRESSED_ONCE"):
+        io.say("the east is in the room now. not visibly. the dome is "
+               "sealed and the shutter is shut and the east is in the "
+               "room the way winter is in a house, under the doors, in "
+               "the nails. tonight the sector gets its last honest "
+               "count. after that — the wire has begun addressing "
+               "itself to you, and you do not believe it has finished. "
+               "it is your arithmetic. finish it or do not.")
+    else:
+        io.say("the east is in the room now. not visibly. the dome is "
+               "sealed and the shutter is shut and the east is in the "
+               "room the way winter is in a house, under the doors, in "
+               "the nails. tonight the sector gets its last honest "
+               "count. after that, whatever comes. it is your "
+               "arithmetic. finish it or do not.")
     io.say("FINAL EPOCH. ALL BOARDS REMAIN AVAILABLE.", "os")
 
 

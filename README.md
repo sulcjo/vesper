@@ -56,3 +56,10 @@ python3 -m pytest tests/
 
 Engine (`engine/`) is pure and tested; every line of story lives in
 `content/`. See `docs/design.md`.
+
+## Single-file build
+
+```
+python3 tools/build_pyz.py   # writes dist/vesper.pyz
+python3 dist/vesper.pyz      # runs anywhere Python 3.10+ lives
+```

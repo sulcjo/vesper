@@ -20,6 +20,9 @@ _KIND_STYLE = {
 
 
 class TerminalIO:
+    def __init__(self) -> None:
+        self.eof_reached = False
+
     def say(self, text: str, kind: str = "prose") -> None:
         styles, pace = _KIND_STYLE.get(kind, _KIND_STYLE["prose"])
         term.say(text, *styles, pace=pace)
@@ -28,6 +31,7 @@ class TerminalIO:
         try:
             return input(term.paint(prompt, term.Style.GREEN))
         except EOFError:
+            self.eof_reached = True
             return "QUIT"
         except KeyboardInterrupt:
             print()
@@ -109,6 +113,10 @@ def run(argv: list[str]) -> int:
             endings.play(state, io)
             persistence.append_ledger(state.observer, state.ending,
                                       state.watch)
+            keepsake_path = persistence.write_keepsake(state)
             persistence.delete()
+            if keepsake_path is not None:
+                io.say(f"(something was left for you in "
+                       f"{keepsake_path.parent})", "dim")
             io.say("(a new watch begins with: python3 vesper.py)", "dim")
             return 0

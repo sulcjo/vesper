@@ -70,18 +70,36 @@ def _present_scene(state: GameState, star: catalog.Star, io: IO) -> GameState:
     return state
 
 
+_RETAINED_AGAIN = (
+    "there it is: small, stubborn, and — as of tonight — unofficial. "
+    "you hold it in the crosshair a while, the way you would hold a "
+    "door for someone slow.",
+    "still burning, still denied. you log it against the archive's "
+    "clean refusal and feel, absurdly, like a man vouching for a "
+    "friend at a border post.",
+    "present. uncatalogued. yours, then. the eye takes its careful "
+    "minute and the pen does the rest.",
+)
+
+
 def _removed_today_scene(state: GameState, star: catalog.Star, io: IO) -> GameState:
     io.say(f"EYE: TRACKING {_title(star).upper()}", "os")
     io.say("ARCHIVE: NO SUCH SOURCE. NO SUCH SOURCE HAS BEEN CATALOGUED.", "os")
     io.pause()
-    io.say("and yet. you put your eye to the tube and there it is, exactly "
-           "where forty years of your own handwriting says it should be. "
-           "the archive is wrong. you are looking at the proof. the proof "
-           "is very small and very far away, and no one else will ever "
-           "check.")
+    if not st.has_flag(state, "SEEN_RETENTION"):
+        state = st.add_flag(state, "SEEN_RETENTION")
+        io.say("and yet. you put your eye to the tube and there it is, "
+               "exactly where forty years of your own handwriting says "
+               "it should be. the archive is wrong. you are looking at "
+               "the proof. the proof is very small and very far away, "
+               "and no one else will ever check.")
+        io.say("ANNOTATION LOGGED. RETENTION GRANTED — ONE EPOCH.", "os")
+        io.say("one epoch. the system's little mercy. as if it were "
+               "embarrassed.", "dim")
+        return state
+    index = (state.watch + len(star.id)) % len(_RETAINED_AGAIN)
+    io.say(_RETAINED_AGAIN[index])
     io.say("ANNOTATION LOGGED. RETENTION GRANTED — ONE EPOCH.", "os")
-    io.say("one epoch. the system's little mercy. as if it were embarrassed.",
-           "dim")
     return state
 
 
@@ -112,9 +130,23 @@ def _removed_past_scene(state: GameState, star: catalog.Star, io: IO) -> GameSta
                "smuggling a legend across a border.")
         io.say("ANNOTATION LOGGED. ARCHIVE OBJECTS TO ANNOTATION.", "os")
         return state
-    io.say("nothing in the field. not a dimness where it burned down, not "
-           "a gap the right shape. the sky has closed over the place like "
-           "water over a stone that was never thrown.")
+    if st.has_flag(state, "SEEN_EMPTY_FIELD"):
+        variants = (
+            "empty, in the way you have learned to read empty: "
+            "closed over, seamless, nothing owed.",
+            "the field again, and again nothing — not even the kind "
+            "of nothing that remembers being something.",
+            "you give the coordinates their minute of attention "
+            "anyway. attendance is not contingent on attendance "
+            "being returned.",
+        )
+        io.say(variants[(state.watch + len(star.id)) % len(variants)])
+    else:
+        state = st.add_flag(state, "SEEN_EMPTY_FIELD")
+        io.say("nothing in the field. not a dimness where it burned "
+               "down, not a gap the right shape. the sky has closed "
+               "over the place like water over a stone that was never "
+               "thrown.")
     if star.name:
         io.say(f"you say the name anyway, quietly, giving it one more "
                f"witness: {star.name}.", "dim")

@@ -35,6 +35,7 @@ class ScriptedIO:
         self.answers = list(answers or [])
         self.said: list[tuple[str, str]] = []
         self.prompts: list[str] = []
+        self.eof_reached = False
 
     def say(self, text: str, kind: str = "prose") -> None:
         self.said.append((kind, text))
@@ -43,6 +44,7 @@ class ScriptedIO:
         self.prompts.append(prompt)
         if self.answers:
             return self.answers.pop(0)
+        self.eof_reached = True
         return ""
 
     def art(self, lines: list[str]) -> None:

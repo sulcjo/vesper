@@ -48,7 +48,7 @@ def _scene_first_night(state: GameState, io: IO) -> GameState:
            "of everything that ever burned, thinned across the dark "
            "until it is texture more than voice. Okonkwo called "
            "listening to it 'taking the sea air'. there has never "
-           "been a sea within four light-decades of this chair.")
+           "been a sea within four light-years of this chair.")
     io.say("you sit with it a while anyway, the way he taught you on "
            "your first watch: gain low, eyes shut, until the ear "
            "stops hunting for words in it and lets it be weather. "
@@ -60,13 +60,19 @@ def _scene_first_night(state: GameState, io: IO) -> GameState:
 
 def _scene_hollow_fading(state: GameState, io: IO) -> GameState:
     _strip(io, _noise(3, 20) + [4, 1, 4, 1, 3, 0, 4, 1] + _noise(7, 20))
-    io.say("BAND 9 — REGISTERED BEACON: HOLLOW HILL ENCLAVE.", "os")
+    io.say("BAND 9 — REGISTERED BEACON: SHACKLETON ENCLAVE, LUNA "
+           "SOUTH.", "os")
     io.pause()
-    io.say("the loop again, fainter. safe harbour. come in slowly. "
-           "mind the — and there the sentence steps on a missing "
-           "board. one word gone from the middle, clean, no scratch "
-           "of damaged tape, the surrounding syllables closing over "
-           "the gap as if they had always been neighbours.")
+    io.say("the loop again, fainter. bezpečný přístav. vplouvejte "
+           "pomalu. pozor na — and there the sentence steps on a "
+           "missing board. one word gone from the middle, clean, no "
+           "scratch of damaged tape, the surrounding syllables "
+           "closing over the gap as if they had always been "
+           "neighbours. the word for shoals. you knew it last watch. "
+           "you learned it from a grammar book, forty years ago, and "
+           "the grammar book is on your shelf, and you already know "
+           "without standing up what its page will and will not "
+           "hold.")
     io.say("you have heard tape rot. tape rot mumbles. this is not "
            "a mumble. this is an edit, and you note in the log, in "
            "your steadiest hand, that you cannot remember what the "
@@ -78,23 +84,27 @@ def _scene_hollow_fading(state: GameState, io: IO) -> GameState:
 
 def _scene_hollow_hill(state: GameState, io: IO) -> GameState:
     _strip(io, _noise(2, 16) + [5, 2, 5, 2, 4, 1, 5, 2] * 2 + _noise(5, 16))
-    io.say("BAND 9 — REGISTERED BEACON: HOLLOW HILL ENCLAVE.", "os")
+    io.say("BAND 9 — REGISTERED BEACON: SHACKLETON ENCLAVE, LUNA "
+           "SOUTH.", "os")
     io.pause()
-    io.say("the Hollow Hill loop. a woman's voice, nine hundred years "
-           "dead, reading the all-clear in a language you had to "
-           "learn from a grammar book — the vowels worn smooth as "
-           "river stones by nine centuries of playback. safe "
-           "harbour, she says, more or less. come in slowly. mind "
-           "the shoals.")
+    io.say("the Shackleton loop. a woman's voice, nine hundred years "
+           "dead, reading the harbour litany in one of old Earth's "
+           "small languages — one you had to learn from a grammar "
+           "book, the vowels worn smooth as river stones by nine "
+           "centuries of playback. bezpečný přístav, she says. "
+           "vplouvejte pomalu. pozor na mělčiny. safe harbour, more "
+           "or less. come in slowly. mind the shoals.")
     io.say("and behind her voice, if you close your eyes and lean "
            "into the gain, the room she sat in: the creak of a "
-           "chair, a door shutting somewhere down a hall, weather — "
-           "actual weather — ticking against a window. a town's "
-           "last ordinary afternoon, pressed flat into the tape "
-           "like a flower kept in a book nobody owns anymore.", "dim")
-    io.say("nobody has gone in slowly for centuries. the tape survived "
-           "the town. you have long since stopped deciding whether that "
-           "is terrible or kind.")
+           "chair, a door shutting somewhere down a hall, and — "
+           "under everything — rain against a window. there was "
+           "never rain at Shackleton. they piped the sound of old "
+           "Earth storms into the concourse, the books say, for the "
+           "comfort of it. a recording inside a recording: weather "
+           "from a world already done raining.", "dim")
+    io.say("nobody has come in slowly for centuries. the tape survived "
+           "the enclave. you have long since stopped deciding whether "
+           "that is terrible or kind.")
     io.say("WIRE: TRAFFIC LOGGED. LOOP INTEGRITY 61% AND FALLING.", "os")
     return st.add_flag(state, "HEARD_HOLLOW")
 
@@ -108,11 +118,13 @@ def _scene_unregistered(state: GameState, io: IO) -> GameState:
     io.say("ARCHIVE: NO BEACON HAS EVER BEEN REGISTERED ON THIS BAND.", "os")
     io.pause()
     if st.has_flag(state, "HEARD_HOLLOW"):
-        io.say("you sat here two watches ago and listened to her read the "
-               "all-clear. you could hum the cadence of it now. the "
-               "archive holds no tape, no town, no woman. the hiss where "
-               "her voice was has edges, like a room with the furniture "
-               "taken out but the dents still in the carpet.")
+        io.say("you sat here two watches ago and listened to her read "
+               "the harbour litany. you could hum the cadence of it "
+               "now. the archive holds no tape, no enclave, no woman — "
+               "Shackleton it lists as a hole at the pole of the Moon, "
+               "surveyed once, never settled. the hiss where her voice "
+               "was has edges, like a room with the furniture taken "
+               "out but the dents still in the carpet.")
     else:
         io.say("the hiss on band nine is wrong in a way you cannot put "
                "your finger on — structured, like silence poured into a "
@@ -143,19 +155,21 @@ def _scene_echo(state: GameState, io: IO) -> GameState:
 
 def _scene_pulse(state: GameState, io: IO) -> GameState:
     _strip(io, [0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 4, 0] * 4)
-    io.say("BAND 1 — REGISTERED: THE PULSE. CORE ENCLAVE MASTER CLOCK.",
-           "os")
+    io.say("BAND 1 — REGISTERED: THE MERIDIAN PULSE. GREENWICH, "
+           "EARTH.", "os")
     io.pause()
-    io.say("the Pulse. one soft knock every four seconds, the Core "
-           "enclave's master clock, counting epochs for a civilisation "
-           "that has mostly stopped opening its mail. it is the oldest "
-           "continuous signal in the sky. Okonkwo used to call it the "
-           "pilot light.")
-    io.say("nobody living has raised the Core itself. but the clock is "
-           "wound, or winds itself, and out of everything on the wire "
-           "it is the one sound that has never once been strange. you "
-           "let a dozen knocks go by, the way you would stand in a "
-           "doorway listening to a house sleep.")
+    io.say("the Meridian Pulse. one soft knock every four seconds, "
+           "from the old zero line on the home world — the clock the "
+           "species set its every other clock by, still counting "
+           "epochs for a civilisation that has mostly stopped opening "
+           "its mail. it is the oldest continuous signal in the sky. "
+           "Okonkwo used to call it the pilot light.")
+    io.say("nobody living has raised Earth itself. but the clock is "
+           "wound, or winds itself, under the hill at Greenwich where "
+           "the counting of hours was once a trade, and out of "
+           "everything on the wire it is the one sound that has never "
+           "once been strange. you let a dozen knocks go by, the way "
+           "you would stand in a doorway listening to a house sleep.")
     io.say("WIRE: PULSE COUNT AGREES WITH STATION COUNT. ALL CLOCKS "
            "CONCUR.", "os")
     return st.add_flag(state, "HEARD_PULSE")
@@ -164,13 +178,14 @@ def _scene_pulse(state: GameState, io: IO) -> GameState:
 def _scene_pulse_wrong(state: GameState, io: IO) -> GameState:
     _strip(io, [0, 0, 4, 0, 0, 0, 4, 0, 0, 4, 0, 0, 4, 0, 4, 0] * 2
            + [4, 4] + [0] * 6)
-    io.say("BAND 1 — REGISTERED: THE PULSE.", "os")
+    io.say("BAND 1 — REGISTERED: THE MERIDIAN PULSE.", "os")
     io.pause()
     io.say("the knock is there, and then the knock is early, and then "
            "it is two knocks close together like a heart missing its "
-           "footing. you time it against the wound clock for an hour. "
-           "there is no drift. there is arithmetic — the intervals are "
-           "shortening by a fixed ratio, patient as interest.")
+           "footing. Earth's own clock. you time it against the wound "
+           "clock for an hour. there is no drift. there is arithmetic "
+           "— the intervals are shortening by a fixed ratio, patient "
+           "as interest.")
     if st.has_flag(state, "HEARD_PULSE"):
         io.say("the pilot light is not going out. it is being turned "
                "down, by the hand of nothing, on a schedule. a clock "

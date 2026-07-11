@@ -8,6 +8,7 @@ BOOT_LINES = (
     "VESPER STATION — SKY CATALOGUE AUTHORITY",
     "TERMINAL 1 OF 1",
     "",
+    "SITE ................. NORTH RIM, MARE FRIGORIS, LUNA",
     "POWER ................ GENERATOR (LOCAL)",
     "ARCHIVE .............. MOUNTED (READ DEGRADED)",
     "CATALOGUE ............ MOUNTED",

@@ -46,10 +46,18 @@ def _remy(state: GameState, io: IO) -> None:  # noqa: ARG001
            "BROWN.", "os")
     io.say("the first pages are administration: the Bureau's founding "
            "writ, the station's consecration — his word — and the "
-           "reason, set down once and never repeated: 'the enclaves "
-           "have turned their lamps inward. someone must sit where "
-           "the lamps face out. the sky is old and owed an audience "
-           "at its going.'")
+           "lineage, copied out in full: the catalogue descends from "
+           "the hill observatories of old Earth, hand to hand, "
+           "Greenwich and Palomar and the high dry mountains of "
+           "Chile, and behind them the clay tablets of Babylon, where "
+           "a priest first wrote down where a light stood and dared "
+           "the sky to move it. 'we are the far end of the longest "
+           "unbroken record our species ever kept. it will not break "
+           "on Luna.'")
+    io.say("then the reason, set down once and never repeated: 'the "
+           "enclaves have turned their lamps inward. someone must sit "
+           "where the lamps face out. the sky is old and owed an "
+           "audience at its going.'")
     io.say("later, this, undated: 'a man asked me at the founding "
            "what the watch was FOR, what use a count nobody reads. "
            "i said: when a thing cannot be saved, it can still be "
@@ -93,7 +101,7 @@ def _okonkwo(state: GameState, io: IO) -> None:  # noqa: ARG001
     io.say("VOLUME III — OKONKWO. A LONG FORWARD HAND, LIKE A MAN "
            "WALKING INTO WIND.", "os")
     io.say("his watch was the leaving-time. four beacons on the wire "
-           "when it began; the Hollow Hill loop alone at the end, "
+           "when it began; the Shackleton loop alone at the end, "
            "and the towns below the scarp gone quiet one by one — "
            "'not fallen,' he writes, 'furled. they have voted, "
            "hearth by hearth, that the past is more comfortable "

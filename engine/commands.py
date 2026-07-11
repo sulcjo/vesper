@@ -175,7 +175,8 @@ def _diff(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
                  else "ACCESSION IN YOUR HAND")
         io.say(f"  {shown}     NO SUCH SOURCE          {right}", "os")
         if star.name:
-            io.say(f"               └ {star.name}", "os")
+            folk = f" — {star.folk}" if star.folk else ""
+            io.say(f"               └ {star.name}{folk}", "os")
     io.say(f"REMOVALS THIS EPOCH: {len(removals)}. EXTINCTION EVENTS "
            f"LOGGED: 0.", "os")
     io.pause()
@@ -186,20 +187,22 @@ def _diff(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
                "you have been initialling empty sky for forty years, "
                "and the record is signed by everyone but you.")
     elif state.watch == 3:
-        io.say("the Ember Gate tonight. a binary since before the "
-               "catalogue was a catalogue — and the archive now holds "
-               "one star and one apology of arithmetic, a companion "
-               "orbiting a mass that is no longer permitted to have "
-               "been. the numbers still balance. they balance around a "
-               "held breath.")
+        io.say("Alpha Centauri tonight. the Ember Gate — the near "
+               "neighbours, the first door the species ever wanted "
+               "open, a binary since before the catalogue was a "
+               "catalogue. and the archive now holds one apology of "
+               "arithmetic: little Proxima, orbiting masses that are "
+               "no longer permitted to have been. the numbers still "
+               "balance. they balance around a held breath.")
     elif state.watch == 5:
-        io.say("the Pilgrim is in the column tonight. your first "
-               "accession. you were twenty-six; you measured its "
-               "motion four nights running before you dared claim it, "
-               "and Okonkwo signed the accession with both your names "
-               "because, he said, a first star should be witnessed "
-               "twice. the archive now witnesses it zero times. you "
-               "make up the difference.")
+        io.say("Barnard's Star is in the column tonight — the "
+               "Pilgrim, the fastest walker the old sky had. your "
+               "first accession re-confirmation. you were twenty-six; "
+               "you measured its motion four nights running before "
+               "you dared claim it, and Okonkwo signed the page with "
+               "both your names because, he said, a first star should "
+               "be witnessed twice. the archive now witnesses it zero "
+               "times. you make up the difference.")
     elif state.watch == 6:
         io.say("Weir's Star. they named it the day they buried her — "
                "the Bureau's one recorded act of sentiment, a woman's "
@@ -209,15 +212,15 @@ def _diff(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
                "continues to hold two initials, cut deep, in a medium "
                "that has never heard of the archive.")
     elif state.watch == 8:
-        io.say("the Lantern. the first place your eye goes. the first "
-               "star every keeper showed to every visitor the station "
-               "ever had, back when it had them — the one light in "
-               "the sector that never needed the trick of looking "
-               "away. the column holds it now between VS-0479 and "
-               "VS-0512 as if it were a line item. you initial the "
-               "diff, because the duty is the duty, and your pen "
-               "presses hard enough to be read from the back of the "
-               "page.")
+        io.say("Sirius. the Dog Star. the Lantern. the brightest "
+               "thing the old sky had and the first place every "
+               "keeper's eye has gone for as long as there have been "
+               "keepers — the one light in the sector that never "
+               "needed the trick of looking away. the column holds it "
+               "now between Ross 614 and LHS 1140 as if it were a "
+               "line item. you initial the diff, because the duty is "
+               "the duty, and your pen presses hard enough to be read "
+               "from the back of the page.")
     elif state.watch >= 7:
         io.say("you no longer check the archive against your journal. "
                "you check your journal against your memory, and you do "

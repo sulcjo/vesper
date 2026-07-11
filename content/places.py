@@ -88,7 +88,7 @@ _DOME: dict[int, Scene] = {
        "between you and the east wall. an instrument between you and "
        "a direction, as if a direction could be interrupted. the "
        "noticing is worse than the standing.",
-    5: "the mirror was ground at Hollow Hill, by hand, over eleven "
+    5: "the mirror was ground at Shackleton, by hand, over eleven "
        "years, and carried up the scarp on a sledge by masons who "
        "reckoned the labour holy — the last light of the sky deserved "
        "one good eye to land in, they said. their mark is stamped in "
@@ -145,7 +145,7 @@ _CORRIDOR: dict[int, Scene] = {
        "his clothes before a journey. you touch the cold figures in "
        "passing. forty paces. still forty. some numbers hold.",
     3: "the walls are cut blocks, not prefab: glass-desert stone, "
-       "quarried and dressed by the Hollow Hill masons in the same "
+       "quarried and dressed by the Shackleton masons in the same "
        "decade as the mirror. here and there a block carries a "
        "mason's mark — the little upturned face — and one, at knee "
        "height near the plant room, carries a child's handprint "
@@ -260,7 +260,7 @@ _QUARTERS: dict[int, Scene] = {
 
 _PLANT: dict[int, Scene] = {
     1: "the plant room is two lamps, a jar, and the only green in "
-       "four light-decades. the lamps hum at a pitch just above the "
+       "four light-years. the lamps hum at a pitch just above the "
        "generator's, and the air in here is different air — thick, "
        "wet, faintly sweet, the condensation crawling the inside of "
        "the jar in beads that gather and let go, gather and let go. "
@@ -268,7 +268,7 @@ _PLANT: dict[int, Scene] = {
        "has never stood in here at 0300 with its face in the "
        "leaves, breathing.",
     2: "it is orchard stock, the plant — a cutting of a cutting of a "
-       "tree that stood at Hollow Hill when Hollow Hill stood, come "
+       "tree that stood in the Shackleton concourse when Shackleton stood, come "
        "up the scarp on the last shuttle in a tin of wet cloth, "
        "logged by Okonkwo as 'provision, morale, one (1)'. the town "
        "that grew it has been unhappened. the cutting has not. you "
@@ -296,7 +296,7 @@ _PLANT: dict[int, Scene] = {
        "toward the light. good, you tell it, low. hold your heading.",
     7: "cold outside the door tonight, and the green smell stronger "
        "for it, the way bread smells more in a cold kitchen. you "
-       "stand in it and breathe. four light-decades of ember and "
+       "stand in it and breathe. four light-years of ember and "
        "static in every direction, and this one small wet room "
        "still smells like the middle of a summer that happened to "
        "someone.",
@@ -449,13 +449,20 @@ def _outside_scene(state: GameState, io: IO) -> GameState:
     io.pause(0.6)
     io.say("outside is the sound of your own blood and nothing else "
            "whatsoever — that, and what the boots bring up: the "
-           "ground's dry crunch arriving through your soles and "
+           "regolith's dry crunch arriving through your soles and "
            "shinbones, felt more than heard, each step a small "
            "report filed by the body. the ground is grey glass to "
-           "the horizon, dunes of it, frozen mid-gesture. above you "
-           "the sky stands the way it has stood all your life — "
-           "except in the east, where there is now a margin with "
-           "nothing written in it.")
+           "the horizon, the Sea of Cold living up to both its "
+           "names. above you the sky stands the way it has stood "
+           "all your life — except in the east, where there is now "
+           "a margin with nothing written in it.")
+    io.say("and low over the southern rim, where it has hung since "
+           "before there were eyes on this world to hang for: the "
+           "Earth. dark, of course — a coin of deeper dark on the "
+           "dark, home to whatever still keeps the Pulse wound. no "
+           "keeper has ever caught it showing a light. every keeper "
+           "has looked. you look now, on protocol, the oldest "
+           "protocol there is.", "dim")
     io.say("you walk the line to the array, hand over hand along the "
            "tether, and do the work: two couplings re-seated, one "
            "feed-horn swept clear. the work takes eleven minutes. you "

@@ -49,7 +49,11 @@ def look(state: GameState, raw: str, io: IO) -> GameState:
 
 
 def _title(star: catalog.Star) -> str:
-    return f"{star.id} — {star.name}" if star.name else star.id
+    if star.name and star.folk:
+        return f"{star.id} — {star.name}, {star.folk}"
+    if star.name:
+        return f"{star.id} — {star.name}"
+    return star.id
 
 
 def _present_scene(state: GameState, star: catalog.Star, io: IO) -> GameState:
@@ -59,11 +63,13 @@ def _present_scene(state: GameState, star: catalog.Star, io: IO) -> GameState:
     if star.note:
         io.say(star.note, "dim")
     if star.id == "VS-0302" and state.watch >= 3:
-        io.say("you time its drift against the crosshair, out of habit. "
-               "the period is unchanged. it swings around the place where "
-               "the Ember Gate was, keeping faith with a mass the archive "
-               "no longer lists. the arithmetic still works. that is the "
-               "part you don't like.")
+        io.say("Proxima. you time her drift against the crosshair, out "
+               "of habit. the period is unchanged: she swings around "
+               "the place where Alpha Centauri was, keeping faith with "
+               "masses the archive no longer lists. trillions of years "
+               "left in her, the little red sister — she will outlive "
+               "the count itself. the arithmetic still works. that is "
+               "the part you don't like.")
     if star.id == "VS-0001":
         io.say("STILL THERE. STILL HERE.", "dim")
     io.say("ANNOTATION LOGGED. OBSERVER OF RECORD CONFIRMS SOURCE.", "os")
@@ -148,8 +154,9 @@ def _removed_past_scene(state: GameState, star: catalog.Star, io: IO) -> GameSta
                "over the place like water over a stone that was never "
                "thrown.")
     if star.name:
+        spoken = f"{star.folk or star.name}" if star.folk else star.name
         io.say(f"you say the name anyway, quietly, giving it one more "
-               f"witness: {star.name}.", "dim")
+               f"witness: {spoken}.", "dim")
     io.say("ANNOTATION LOGGED. ARCHIVE OBJECTS TO ANNOTATION.", "os")
     return state
 

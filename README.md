@@ -2,10 +2,15 @@
 
 *A terminal game about being the last person still looking up.*
 
-The universe is old. The sky is mostly embers, the enclaves stopped
-answering centuries ago, and one observatory still keeps the sky
-catalogue — because the watch has always been kept. You are the
-observer, fifth keeper of the Vesper catalogue. Nine watches remain.
+This is our universe, very late. The bright stars died as the
+physics always said they would; what remains of the real sky is the
+red dwarfs — Proxima, Barnard's Star, Wolf 359 — burning their
+trillion-year candles among the cooled remnants of the famous dead.
+On the north rim of Mare Frigoris, the Sea of Cold, on Luna, one
+observatory still keeps the sky catalogue — the far end of the
+longest unbroken record our species ever kept, hand to hand back to
+the clay of Babylon. You are the observer, fifth keeper of the
+Vesper catalogue. Nine watches remain.
 
 The scans have begun returning removals: sources that are not dying,
 but un-having-been. The archive agrees they never existed. Your

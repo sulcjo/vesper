@@ -53,6 +53,28 @@ def fatigue_line(acts: int) -> str:
     return _FATIGUE[min(over, len(_FATIGUE) - 1)]
 
 
+_PEN_PROMPTS = {
+    1: "begin with the weather, Okonkwo told you once. there is no "
+       "weather. he knew that. begin anyway.",
+    2: "write what you counted. write what counted.",
+    3: "the archive holds records. hold something the archive cannot.",
+    4: "write the sound the generator makes when it doubts, exactly, "
+       "so that someone could believe you.",
+    5: "write who taught you. spell the names slowly.",
+    6: "write the name you still have. write around the one you do "
+       "not.",
+    7: "write what you are for. one line will do. one line has always "
+       "done.",
+    8: "write what you would keep, if keeping were the only verb left.",
+    9: "last page tonight, one way or another. write to whoever reads "
+       "over the shoulder of no one.",
+}
+
+
+def pen_prompt(watch: int) -> str:
+    return _PEN_PROMPTS.get(watch, _PEN_PROMPTS[9])
+
+
 def duties_line(state: GameState) -> str:
     marks = []
     for duty, flag in (("SCAN", f"SCANNED_{state.watch}"),
@@ -154,6 +176,13 @@ def _wake_6(state: GameState, io: IO) -> None:  # noqa: ARG001
            "water, the laugh — all present, filed, vivid. the name has "
            "the shape of a missing tooth: your tongue keeps going to "
            "it, and it keeps being a hole.")
+    io.say("your mouth still knows it. that is the cruelty of it. the "
+           "lips part, the tongue lifts, the whole word stands ready "
+           "in the muscle the way a stair is ready in the legs — and "
+           "nothing arrives. the body keeps what the mind is docked. "
+           "for one long minute you sit there, shaped around a sound "
+           "you cannot make, a bell holding the swing of a tongue it "
+           "no longer has.")
     io.say("you sat on the edge of the cot and made yourself say the "
            "names you do have. your own. the plant's, which you have "
            "never told anyone. Weir. Okonkwo. Sever. Remy. the count "
@@ -173,6 +202,12 @@ def _wake_7(state: GameState, io: IO) -> None:  # noqa: ARG001
            "you have begun to catch the walls at it — holding still, "
            "the way a room holds still when it has just stopped "
            "talking about you.")
+    io.say("twice tonight you came to from the outside: a keeper, seen "
+           "as if from the doorway, an old man bent correct and "
+           "punctual over a board. you could not swear you were "
+           "behind his eyes at the time. the work was right, whoever "
+           "did it. you initial his figures and do not raise the "
+           "matter with him.", "dim")
 
 
 def _wake_8(state: GameState, io: IO) -> None:  # noqa: ARG001

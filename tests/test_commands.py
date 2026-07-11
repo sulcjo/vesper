@@ -143,3 +143,11 @@ def test_journal_copy_with_nothing_faded_is_free():
     state, _ = commands.dispatch(state, "JOURNAL COPY", io)
     assert state.acts == 0
     assert "NO PAGE NEEDS THE PEN" in io.transcript()
+
+
+def test_journal_write_offers_a_watch_specific_pen_prompt():
+    import dataclasses
+    io = ScriptedIO(answers=["the name is still mine.", "."])
+    state = dataclasses.replace(_fresh(), watch=6)
+    state, _ = commands.dispatch(state, "JOURNAL WRITE", io)
+    assert "write the name you still have" in io.transcript()

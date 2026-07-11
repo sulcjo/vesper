@@ -101,12 +101,21 @@ _DOME: dict[int, Scene] = {
        "holds still the way rooms hold still for old men. you thank "
        "it. an observer's conscience must live somewhere; some nights "
        "it is easier to keep it in the woodwork than in the chest.",
-    8: "the crank, the chair, the cold circle of brass. you sit a "
-       "while in the dark with your hand on the shutter gear and are, "
-       "briefly, all of them at once: Remy's stubbornness, Sever's "
-       "hands, Okonkwo's patience, Weir's unfinished V. everything "
-       "that still works is a kept promise, and the dome is the "
-       "oldest promise on the station.",
+    8: ("the crank, the chair, the cold circle of brass. you sit a "
+        "while in the dark with your hand on the shutter gear and are, "
+        "briefly, all of them at once: Remy's stubbornness, Sever's "
+        "hands, Okonkwo's patience, Weir's unfinished V. everything "
+        "that still works is a kept promise, and the dome is the "
+        "oldest promise on the station.",
+        "and you have known, for forty years, what the promise is "
+        "underneath — you are not a fool and were never permitted to "
+        "be one. the count is the plank a drowning species nailed "
+        "between itself and the water: keep a record and the dark is "
+        "not bottomless; be remembered and you have not entirely "
+        "died. knowing this has never once made you let go. a man "
+        "may see his plank clearly and love it. a man may drown "
+        "well-attended, which the water cannot offer, and it turns "
+        "out that was the bargain all along."),
     9: _dome_9,
 }
 

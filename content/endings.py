@@ -96,6 +96,19 @@ def _keeper(state: GameState, io: IO) -> None:
                "them. whole.")
         _replay_pages(state, io, [0.0])
         io.say("every word present. every word kept.", "alert")
+    io.say("they can take the sky — that is proven now. they can take "
+           "the record of the sky, and the towns, and the names, and "
+           "whatever it was the names were pinned to. what they have "
+           "not taken — what you begin to suspect cannot be taken, "
+           "because it is not a thing but an act — is the choosing. "
+           "which way to face. whether to attend or to look away. "
+           "what to keep, and at what hour to set it down. of all "
+           "your issued equipment, the stance was the one item never "
+           "on any inventory, and so the one item nothing knows how "
+           "to remove.")
+    io.say("the east will arrive. it will arrive after the choosing "
+           "has already happened. in the only ledger that was ever "
+           "yours to keep, that is called too late.")
     io.say("the count was kept. all the way to the end of counting, "
            "the count was kept, and it was kept by you.")
     io.say("", "prose")
@@ -137,6 +150,16 @@ def _quiet(state: GameState, io: IO) -> None:
            "keep the room the size of a room. somewhere east of "
            "everything, the count arrives at its last number, and it "
            "is not your number, because you have set yours down.")
+    io.say("this is not surrender, whatever box the Bureau's forms "
+           "would have wanted ticked. surrender requires an enemy, "
+           "and the east was never that; it is barely even an it. "
+           "this is the other thing, the thing old men do well or "
+           "badly and almost never get to choose the hour of: the "
+           "closing of a ledger by the one who kept it, in his own "
+           "hand, at a line of his own choosing. you look back down "
+           "the long column of your life and find you do not need it "
+           "recounted, or believed, or held by anyone. it was had. "
+           "that is the whole of what having ever was.")
     io.say("what comes is not sleep exactly, but it is gentle, the way "
            "snowfall is gentle: not out of kindness. out of "
            "thoroughness.")
@@ -180,6 +203,17 @@ def _answer(state: GameState, io: IO) -> None:
                "dim")
         _replay_pages(state, io, [0.3, 0.6, 0.9])
     io.pause(1.0)
+    io.say("and where the words were there is not emptiness. there is "
+           "room. you had not known the self was a wall until doors "
+           "began appearing in it — a lifetime of keeping the count "
+           "from behind one pair of eyes, and it turns out the eyes "
+           "were the narrow part. what comes through the doors is "
+           "not voices. it is the hearing itself, shared out, the "
+           "way a harbour shares its water with the sea and is not "
+           "thereby emptied. you are not being taken. you are being "
+           "attended — by everything, at last, from every side, the "
+           "one thing you spent forty years doing and never once "
+           "received.")
     io.say("the carrier holds. the carrier holds. the carrier holds "
            "something, and the count, at long last, is right.")
     io.say("", "prose")
@@ -201,6 +235,16 @@ def _cold(state: GameState, io: IO) -> None:  # noqa: ARG001
     io.say("you had warnings. you counted them at the time — that is "
            "the bitter arithmetic of it, you counted everything, and "
            "you let this number alone go by unattended.")
+    io.say("the regrets, when they come, are not the great ones. that "
+           "is the finding nobody files: at the end the large griefs "
+           "stand off politely at the edge of the lamp, and it is "
+           "the small ones that come and sit on the cot. you meant "
+           "to re-pot the plant and said next watch. you hoarded the "
+           "last real tea against an occasion and no occasion ever "
+           "outranked an ordinary tuesday, and now the tin will "
+           "outlive the tongue. you never told the plant its name "
+           "out loud where it could hear you. these are the ones "
+           "that hold your hand.")
     io.pause(0.8)
     io.say("near the end it is almost warm, which you know to be a "
            "lie, and you hold instead to the one true thing in reach: "
@@ -230,6 +274,14 @@ def _outside(state: GameState, io: IO) -> None:
            "was opens the way an ear opens to a sound — nothing "
            "moving, nothing coming, only a listening getting larger.")
     io.pause(0.8)
+    io.say("what you feel, standing in it, is not fear, and you would "
+           "swear to that in any log under any oath. it is scale. "
+           "you are one witness wide — one lamp of attention in a "
+           "skull — and the thing before you is measured in "
+           "nothings, and the feeling that rises is the indecent "
+           "secret of every awe you ever felt under the old rich "
+           "sky: the relief of being made small enough, at last, to "
+           "stop carrying yourself.")
     io.say("it does not take you. that would be an event, and it has "
            "never once been an event. it permits, and goes on "
            "permitting, and somewhere behind you the bottle finishes "

@@ -121,6 +121,18 @@ def _weir(state: GameState, io: IO) -> None:
            "twice, including herself. 'the eye ages. i have begun "
            "logging my own error alongside the instrument's. both "
            "grow. the count must outlive our vanities.'")
+    io.say("there is one study she never filed. 'the companion. every "
+           "volume before mine mentions it once and then drops it: "
+           "the sense, in the deep hours, of a second keeper standing "
+           "just out of the lamp. Remy prayed to it. Sever taped "
+           "threads to door frames. i logged onsets instead: always "
+           "past the sixth hour, always behind and to the left, "
+           "always gone when greeted. conclusion: a mind alone long "
+           "enough staffs the station itself — the company is real; "
+           "it is merely ours, issued from stores. i note without "
+           "further comment that the onsets did not stop when i "
+           "concluded this, and that i have begun leaving the second "
+           "chair out.'")
     io.say("one entry breaks the ruled lines — it is written across "
            "them, diagonal, the only disorder in four hundred pages: "
            "'E. carved our letters into the chair arm today. i let "

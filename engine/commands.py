@@ -249,6 +249,7 @@ def _journal(state: GameState, rest: str, io: IO) -> Result:
 
 
 def _journal_write(state: GameState, io: IO) -> GameState:
+    io.say(watches.pen_prompt(state.watch), "dim")
     io.say("you take up the pen. (finish with a single '.' on its own "
            "line; an empty first line leaves the page blank.)", "dim")
     lines: list[str] = []

@@ -26,6 +26,33 @@ def journal_fade(current_watch: int, entry_watch: int) -> float:
     return min(0.7, base + age_penalty)
 
 
+def hour_label(acts: int) -> str:
+    if acts < 3:
+        return "EARLY"
+    if acts < st.NIGHT_BUDGET:
+        return "DEEP"
+    return "LATE"
+
+
+_FATIGUE = (
+    "the deep hours. your eyes negotiate each line before agreeing to "
+    "read it. an old man's night is a short coat — it does not cover "
+    "everything you would like it to.",
+    "you catch yourself standing in the middle of the room with no "
+    "memory of the errand that brought you there. the errand waits, "
+    "patient, somewhere behind your eyes. the cot argues its case.",
+    "the station has gone very quiet around your tiredness, the way "
+    "company falls silent around a man who should long since have "
+    "gone to bed. whatever this is, it will weigh less in the "
+    "morning. (SLEEP is wise.)",
+)
+
+
+def fatigue_line(acts: int) -> str:
+    over = max(0, acts - st.NIGHT_BUDGET)
+    return _FATIGUE[min(over, len(_FATIGUE) - 1)]
+
+
 def duties_line(state: GameState) -> str:
     marks = []
     for duty, flag in (("SCAN", f"SCANNED_{state.watch}"),
@@ -52,12 +79,18 @@ def wake(state: GameState, io: IO) -> GameState:
     return state
 
 
-def _wake_1(state: GameState, io: IO) -> None:  # noqa: ARG001
+def _wake_1(state: GameState, io: IO) -> None:
     io.say("you wake before the bell, as always. forty years will set a "
            "clock in the meat of you. kettle, dry tea, the two-minute "
            "walk from quarters to the dome with your hand trailing the "
            "cold rail the whole way — the little liturgy, done in the "
            "same order since the morning you inherited it.")
+    if st.has_flag(state, "LEGACY"):
+        io.say("the sign-in book felt heavy under your pen this morning, "
+               "heavier than the station's years explain, as if other "
+               "watches had been kept here that the inventory has "
+               "misplaced. you did not count the pages. you have "
+               "learned which counts to leave alone.", "dim")
     io.say("the work is simple and it is yours: scan the sector, compare "
            "against the archive, file to a Bureau that has not written "
            "back in living memory. the watch has always been kept. that "

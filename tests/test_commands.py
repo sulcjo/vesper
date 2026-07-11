@@ -74,3 +74,72 @@ def test_help_hides_the_door_until_late():
     io_early = ScriptedIO()
     commands.dispatch(_fresh(), "HELP", io_early)
     assert "OUTSIDE" not in io_early.transcript()
+
+
+def test_single_letter_aliases_resolve():
+    assert commands.parse("s")[0] == "SCAN"
+    assert commands.parse("e the lantern") == ("EYE", "the lantern")
+    assert commands.parse("?")[0] == "HELP"
+
+
+def test_deep_night_acts_cost_and_duties_are_free():
+    io = ScriptedIO()
+    state = _fresh()
+    state, _ = commands.dispatch(state, "SCAN", io)
+    state, _ = commands.dispatch(state, "STATUS", io)
+    assert state.acts == 0
+    state, _ = commands.dispatch(state, "WALK dome", io)
+    state, _ = commands.dispatch(state, "LISTEN", io)
+    assert state.acts == 2
+
+
+def test_invalid_targets_cost_nothing():
+    io = ScriptedIO()
+    state = _fresh()
+    state, _ = commands.dispatch(state, "WALK nowhere", io)
+    state, _ = commands.dispatch(state, "EYE VS-9999", io)
+    state, _ = commands.dispatch(state, "TEND teapot", io)
+    assert state.acts == 0
+
+
+def test_fatigue_prose_past_the_budget():
+    import dataclasses
+    io = ScriptedIO()
+    state = dataclasses.replace(_fresh(), acts=st.NIGHT_BUDGET)
+    state, _ = commands.dispatch(state, "WALK dome", io)
+    assert "short coat" in io.transcript()
+
+
+def test_final_watch_is_exempt_from_fatigue():
+    import dataclasses
+    io = ScriptedIO()
+    state = dataclasses.replace(_fresh(), watch=9, acts=st.NIGHT_BUDGET + 2)
+    state, _ = commands.dispatch(state, "WALK dome", io)
+    assert "short coat" not in io.transcript()
+
+
+def test_journal_copy_restores_all_but_one_word():
+    import dataclasses
+    from engine import draw
+    state = st.add_journal(_fresh(), "the kettle sang early and i thought "
+                                     "of the pier and the sun on the water")
+    state = dataclasses.replace(state, watch=7)
+    io = ScriptedIO()
+    state, _ = commands.dispatch(state, "JOURNAL COPY", io)
+    living = st.living_journal(state)
+    assert len(living) == 1
+    _, fresh_entry = living[0]
+    assert fresh_entry.watch == 7
+    holes = sum(1 for tok in fresh_entry.text.split()
+                if draw.GONE_CHAR in tok)
+    assert holes == 1
+    assert "RESTORED:" in io.transcript()
+    assert state.acts == 1
+
+
+def test_journal_copy_with_nothing_faded_is_free():
+    state = st.add_journal(_fresh(), "fresh ink tonight")
+    io = ScriptedIO()
+    state, _ = commands.dispatch(state, "JOURNAL COPY", io)
+    assert state.acts == 0
+    assert "NO PAGE NEEDS THE PEN" in io.transcript()

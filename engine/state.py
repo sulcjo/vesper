@@ -18,11 +18,14 @@ GENERATOR_FATAL_STRIKES = 2  # ignored-warning sleeps before the cold wins
 
 ENDINGS = ("KEEPER", "QUIET", "ANSWER", "COLD", "OUTSIDE")
 
+NIGHT_BUDGET = 6  # deep-night acts before fatigue prose sets in
+
 
 @dataclass(frozen=True)
 class JournalEntry:
     watch: int
     text: str
+    superseded: bool = False
 
 
 @dataclass(frozen=True)
@@ -38,6 +41,8 @@ class GameState:
         ("PLANT", 1),
     )
     generator_strikes: int = 0
+    acts: int = 0
+    final_words: str = ""
     ending: str | None = None
 
 
@@ -57,6 +62,28 @@ def add_flag(state: GameState, *flags: str) -> GameState:
 def add_journal(state: GameState, text: str) -> GameState:
     entry = JournalEntry(watch=state.watch, text=text)
     return replace(state, journal=state.journal + (entry,))
+
+
+def supersede_journal(state: GameState, index: int) -> GameState:
+    """Mark one entry as re-copied; JOURNAL READ skips it thereafter."""
+    entries = tuple(
+        replace(e, superseded=True) if i == index else e
+        for i, e in enumerate(state.journal)
+    )
+    return replace(state, journal=entries)
+
+
+def living_journal(state: GameState) -> list[tuple[int, JournalEntry]]:
+    """Entries still in the book, with their original indices."""
+    return [(i, e) for i, e in enumerate(state.journal) if not e.superseded]
+
+
+def spend_act(state: GameState) -> GameState:
+    return replace(state, acts=state.acts + 1)
+
+
+def set_final_words(state: GameState, words: str) -> GameState:
+    return replace(state, final_words=words)
 
 
 def witness(state: GameState, designation: str) -> GameState:
@@ -102,7 +129,7 @@ def generator_is_fatal(state: GameState) -> bool:
 
 
 def next_watch(state: GameState) -> GameState:
-    return replace(state, watch=state.watch + 1)
+    return replace(state, watch=state.watch + 1, acts=0)
 
 
 def set_ending(state: GameState, ending: str) -> GameState:

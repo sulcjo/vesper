@@ -68,10 +68,19 @@ def _start(io: IO, fresh: bool) -> GameState | None:
             saved = None
         if saved is not None and saved.ending is None:
             boot_content.welcome_back(io, saved.observer, saved.watch)
+            if saved.watch >= 8:
+                io.say(term.glitch("ARCHIVE .............. MOUNTED "
+                                   "(READ DEGRADED)", severity=0.15,
+                                   seed=saved.watch), "os")
             return watches.wake(saved, io)
     boot_content.boot(io)
-    name = boot_content.sign_in(io)
+    ledger = persistence.load_ledger()
+    name = boot_content.sign_in(io, ledger)
     state = st.new_game(name)
+    if ledger:
+        state = st.add_flag(state, "LEGACY")
+        if any(run["ending"] == "ANSWER" for run in ledger):
+            state = st.add_flag(state, "LEGACY_ANSWER")
     return watches.wake(state, io)
 
 
@@ -86,7 +95,8 @@ def run(argv: list[str]) -> int:
 
     while True:
         persistence.save(state)
-        line = io.ask(f"\nW{state.watch} ▸ ")
+        label = "▒" if state.watch >= FINAL_WATCH else str(state.watch)
+        line = io.ask(f"\nW{label} ▸ ")
         state, signal = commands.dispatch(state, line, io)
         if signal == "quit":
             persistence.save(state)
@@ -97,6 +107,8 @@ def run(argv: list[str]) -> int:
             state = advance_after_sleep(state, io)
         if state.ending is not None:
             endings.play(state, io)
+            persistence.append_ledger(state.observer, state.ending,
+                                      state.watch)
             persistence.delete()
             io.say("(a new watch begins with: python3 vesper.py)", "dim")
             return 0

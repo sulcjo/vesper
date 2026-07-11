@@ -81,3 +81,27 @@ def test_delete_is_idempotent(home):
     persistence.save(_played_state())
     persistence.delete()
     assert persistence.load() is None
+
+
+def test_schema_one_save_loads_with_defaults(home):
+    persistence.save(_played_state())
+    data = json.loads(persistence.save_path().read_text(encoding="utf-8"))
+    data["schema"] = 1
+    del data["acts"]
+    del data["final_words"]
+    data["journal"] = [[w, t] for w, t, _ in data["journal"]]
+    persistence.save_path().write_text(json.dumps(data), encoding="utf-8")
+    loaded = persistence.load()
+    assert loaded.acts == 0
+    assert loaded.final_words == ""
+    assert loaded.journal[0].superseded is False
+
+
+def test_ledger_roundtrip_and_corruption_tolerance(home):
+    assert persistence.load_ledger() == []
+    persistence.append_ledger("Josef", "KEEPER", 9)
+    persistence.append_ledger("Josef", "ANSWER", 9)
+    runs = persistence.load_ledger()
+    assert [r["ending"] for r in runs] == ["KEEPER", "ANSWER"]
+    persistence.ledger_path().write_text("{ broken", encoding="utf-8")
+    assert persistence.load_ledger() == []

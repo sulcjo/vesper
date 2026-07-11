@@ -162,3 +162,45 @@ def test_the_pulse_goes_wrong_on_watch_seven():
     state, io = _play(script)
     assert st.has_flag(state, "HEARD_PULSE_WRONG")
     assert "DECREASING" in io.transcript()
+
+
+def test_keeper_epilogue_replays_journal_unfaded():
+    script = (FULL_WATCH * 8
+              + ["JOURNAL WRITE", "SCAN", "DIFF", "REPORT", "SLEEP"])
+    answers = ["the plant has a new leaf tonight.", "."]
+    state, io = _play(script, answers=answers)
+    assert state.ending == "KEEPER"
+    transcript = io.transcript()
+    assert "every word present. every word kept." in transcript
+    assert "the plant has a new leaf tonight." in transcript
+    assert "ANNOTATIONS IN YOUR HAND:" in transcript
+
+
+def test_answer_transmits_and_decays_the_players_own_words():
+    script = FULL_WATCH * 8 + ["LISTEN", "ANSWER"]
+    state, io = _play(script, answers=["remember the pier"])
+    assert state.ending == "ANSWER"
+    assert state.final_words == "remember the pier"
+    transcript = io.transcript()
+    assert "“remember the pier,” you send" in transcript
+    from engine import draw
+    assert draw.GONE_CHAR in transcript
+
+
+def test_sign_in_book_lists_previous_runs():
+    from content import boot
+    ledger = [{"name": "Josef", "ending": "KEEPER", "watch": 9}]
+    io = ScriptedIO(answers=["Josef"])
+    name = boot.sign_in(io, ledger)
+    transcript = io.transcript()
+    assert name == "Josef"
+    assert "watch closed in good order" in transcript
+    assert "you have never signed this book before" in transcript
+
+
+def test_deaths_print_a_surviving_journal_fragment():
+    script = (["JOURNAL WRITE"] + ["SLEEP"] * 5)
+    state, io = _play(script, answers=["the kettle sang early tonight "
+                                       "and i let it.", "."])
+    assert state.ending == "COLD"
+    assert "PAPER RECORD — UNFILED" in io.transcript()

@@ -42,6 +42,40 @@ def _scene_hiss(state: GameState, io: IO) -> GameState:
     return state
 
 
+def _scene_first_night(state: GameState, io: IO) -> GameState:
+    _strip(io, _noise(1, 48))
+    io.say("the hiss. the oldest sound there is — the exhaled breath "
+           "of everything that ever burned, thinned across the dark "
+           "until it is texture more than voice. Okonkwo called "
+           "listening to it 'taking the sea air'. there has never "
+           "been a sea within four light-decades of this chair.")
+    io.say("you sit with it a while anyway, the way he taught you on "
+           "your first watch: gain low, eyes shut, until the ear "
+           "stops hunting for words in it and lets it be weather. "
+           "it has never once had words in it. hold on to that, he "
+           "said. the night you hear words, come tell me.")
+    io.say("WIRE: CARRIER ONLY. NO TRAFFIC.", "os")
+    return st.add_flag(state, "TOOK_THE_SEA_AIR")
+
+
+def _scene_hollow_fading(state: GameState, io: IO) -> GameState:
+    _strip(io, _noise(3, 20) + [4, 1, 4, 1, 3, 0, 4, 1] + _noise(7, 20))
+    io.say("BAND 9 — REGISTERED BEACON: HOLLOW HILL ENCLAVE.", "os")
+    io.pause()
+    io.say("the loop again, fainter. safe harbour. come in slowly. "
+           "mind the — and there the sentence steps on a missing "
+           "board. one word gone from the middle, clean, no scratch "
+           "of damaged tape, the surrounding syllables closing over "
+           "the gap as if they had always been neighbours.")
+    io.say("you have heard tape rot. tape rot mumbles. this is not "
+           "a mumble. this is an edit, and you note in the log, in "
+           "your steadiest hand, that you cannot remember what the "
+           "word used to be, and that you have heard the loop nine "
+           "hundred times.", "dim")
+    io.say("WIRE: TRAFFIC LOGGED. LOOP INTEGRITY 44% AND FALLING.", "os")
+    return st.add_flag(state, "HEARD_THE_EDIT")
+
+
 def _scene_hollow_hill(state: GameState, io: IO) -> GameState:
     _strip(io, _noise(2, 16) + [5, 2, 5, 2, 4, 1, 5, 2] * 2 + _noise(5, 16))
     io.say("BAND 9 — REGISTERED BEACON: HOLLOW HILL ENCLAVE.", "os")
@@ -201,6 +235,8 @@ def _scene_second_address(state: GameState, io: IO) -> GameState:
 
 
 _SCENES = {
+    1: _scene_first_night,
+    3: _scene_hollow_fading,
     2: _scene_hollow_hill,
     4: _scene_unregistered,
     5: _scene_pulse,

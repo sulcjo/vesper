@@ -7,16 +7,48 @@ front of it.
 
 from __future__ import annotations
 
-from engine import state as st
+from content import shelf
+from engine import draw, state as st
 from engine.io import IO
 from engine.state import GameState
+
+
+def run_profile(state: GameState) -> dict:
+    """What kind of keeper this run was. Pure; endings read it."""
+    return {
+        "witnessed": len(state.witnessed),
+        "journal": len(st.living_journal(state)),
+        "volumes": sum(
+            1 for k in shelf.KEEPERS if st.has_flag(state, f"READ_{k}")
+        ),
+        "went_outside": st.has_flag(state, "WENT_OUTSIDE"),
+        "saw_the_other": st.has_flag(state, "SAW_THE_OTHER"),
+        "heard_pulse_wrong": st.has_flag(state, "HEARD_PULSE_WRONG"),
+    }
+
+
+def _replay_pages(state: GameState, io: IO, fractions: list[float]) -> None:
+    """The journal, one last time. fractions cycles over the entries."""
+    living = st.living_journal(state)
+    for n, (index, entry) in enumerate(living):
+        fraction = fractions[min(n * len(fractions) // max(1, len(living)),
+                                 len(fractions) - 1)]
+        shown = draw.erase_words(entry.text, fraction,
+                                 seed=index * 31 + entry.watch)
+        io.art(["  " + line for line in
+                draw.render_page([shown], title=f"WATCH {entry.watch}")])
+        io.pause(0.4)
 
 
 def play(state: GameState, io: IO) -> None:
     io.say("", "os")
     scene = _SCENES[state.ending]
     scene(state, io)
+    profile = run_profile(state)
     io.say("", "os")
+    io.say(f"ANNOTATIONS IN YOUR HAND: {profile['witnessed']}. "
+           f"VOLUMES TAKEN DOWN: {profile['volumes']} OF "
+           f"{len(shelf.KEEPERS)}.", "os")
     io.say(f"■ THE WATCH OF {state.observer.upper()} — {state.ending}", "os")
 
 
@@ -46,6 +78,24 @@ def _keeper(state: GameState, io: IO) -> None:
     io.say("the archive will not hold this. paper holds it. paper, and "
            "whatever it is that paper is a gesture toward — the thing "
            "a witness does, the unwitnessable act of having seen.")
+    profile = run_profile(state)
+    if profile["volumes"] >= len(shelf.KEEPERS):
+        io.say("you shelve your journal beside the other four, squaring "
+               "the spines. you read every one of them, this last tour. "
+               "whatever the shelf is now — record, monument, kindling "
+               "for nobody — it is complete, and completeness was "
+               "always the whole of the craft.")
+    if profile["witnessed"] >= 10:
+        io.say(f"{profile['witnessed']} annotations stand in your hand "
+               "against the archive's clean pages. every one of them "
+               "was a night you looked when looking changed nothing "
+               "and did it anyway. that arithmetic the east may keep.")
+    if profile["journal"]:
+        io.say("and the terminal, unasked, does the one kind thing of "
+               "its long service. it prints your pages back. all of "
+               "them. whole.")
+        _replay_pages(state, io, [0.0])
+        io.say("every word present. every word kept.", "alert")
     io.say("the count was kept. all the way to the end of counting, "
            "the count was kept, and it was kept by you.")
     io.say("", "prose")
@@ -75,6 +125,14 @@ def _quiet(state: GameState, io: IO) -> None:
                "palm. not duties now. courtesies. the difference is "
                "enormous and invisible, like everything tonight.")
     io.pause(0.6)
+    if st.has_flag(state, "BURNED"):
+        io.say("of the pages, one line survives, caught unburned at the "
+               "grate's lip, and you leave it there: ash holds no "
+               "appointments.", "dim")
+    elif st.living_journal(state):
+        io.say("you leave the journal open on the desk, and look once "
+               "at what the fading has decided to spare:", "dim")
+        _replay_pages(state, io, [0.9])
     io.say("you lie down with your boots off. the tick and the pulse "
            "keep the room the size of a room. somewhere east of "
            "everything, the count arrives at its last number, and it "
@@ -93,18 +151,34 @@ def _answer(state: GameState, io: IO) -> None:
     io.say("you key the transmitter. forty years of receiving, and the "
            "sending key is stiff as a new boot. you press it and the "
            "carrier goes out of you — out of the station — east.")
-    io.say(f"you send your name. the true one. “{state.observer},” "
-           "you send, “keeper of the Vesper catalogue, fifth of "
-           "that watch,” and the east takes the words the way dark "
-           "water takes a stone: without argument, without ring or "
-           "ripple, and you feel each one leave you like a pulled "
-           "nail —")
-    io.pause(0.8)
-    io.say("you send your na▒e. the true one. you send your ▒▒me, "
-           "keeper of the ▒esper catalogue, ▒▒▒th of that watch, and "
-           "the ▒ast takes the wor▒s —", "dim")
-    io.say("you send ▒▒▒▒ ▒ame. the ▒▒▒e one. ▒▒▒ send —", "dim")
+    if state.final_words:
+        sent = state.final_words
+        io.say(f"“{sent},” you send, and the east takes the words the "
+               "way dark water takes a stone: without argument, "
+               "without ring or ripple, and you feel each one leave "
+               "you like a pulled nail —")
+        io.pause(0.8)
+        for step, fraction in enumerate((0.3, 0.6, 0.9), start=1):
+            io.say(f"“{draw.erase_words(sent, fraction, seed=step)},” "
+                   "you send —", "dim")
+    else:
+        io.say(f"you send your name. the true one. “{state.observer},” "
+               "you send, “keeper of the Vesper catalogue, fifth of "
+               "that watch,” and the east takes the words the way dark "
+               "water takes a stone: without argument, without ring or "
+               "ripple, and you feel each one leave you like a pulled "
+               "nail —")
+        io.pause(0.8)
+        io.say("you send your na▒e. the true one. you send your ▒▒me, "
+               "keeper of the ▒esper catalogue, ▒▒▒th of that watch, "
+               "and the ▒ast takes the wor▒s —", "dim")
+        io.say("you send ▒▒▒▒ ▒ame. the ▒▒▒e one. ▒▒▒ send —", "dim")
     io.say("▒▒▒ ▒▒▒▒ —", "dim")
+    if st.living_journal(state):
+        io.say("and behind the words, unbidden, the pages go too, "
+               "lifting off the paper line by line into the carrier:",
+               "dim")
+        _replay_pages(state, io, [0.3, 0.6, 0.9])
     io.pause(1.0)
     io.say("the carrier holds. the carrier holds. the carrier holds "
            "something, and the count, at long last, is right.")
@@ -136,6 +210,7 @@ def _cold(state: GameState, io: IO) -> None:  # noqa: ARG001
            "down anyway and got up anyway, ten thousand times, until "
            "once.")
     io.say("", "prose")
+    _unfiled_fragment(state, io)
     io.say("EPOCH 71,20▒. STATION TEMPERATURE OUT OF RANGE.", "os")
     io.say("NO OBSERVER OF RECORD. NO ACTION FOLLOWS.", "os")
 
@@ -163,10 +238,23 @@ def _outside(state: GameState, io: IO) -> None:
     io.say("the tether is found at full extension. the tether is not "
            "found. there is no tether of record.", "dim")
     io.say("", "prose")
+    _unfiled_fragment(state, io)
     io.say("AIRLOCK: OUTER DOOR OPEN AT EPOCH CHANGE.", "os")
     io.say("EXTERIOR WORK LOG: NO ENTRY. NO EXTERIOR WORK HAS EVER "
            "BEEN LOGGED AT VESPER STATION.", "os")
     io.say("NO ACTION FOLLOWS.", "os")
+
+
+def _unfiled_fragment(state: GameState, io: IO) -> None:
+    """For the deaths: one page survives, half-eaten, unfiled."""
+    living = st.living_journal(state)
+    if not living:
+        return
+    index, entry = living[0]
+    shown = draw.erase_words(entry.text, 0.5, seed=index * 31 + entry.watch)
+    io.say("PAPER RECORD — UNFILED:", "os")
+    io.art(["  " + line for line in
+            draw.render_page([shown], title=f"WATCH {entry.watch}")])
 
 
 _SCENES = {

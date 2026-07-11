@@ -81,3 +81,20 @@ def test_set_ending_accepts_only_known_endings():
     assert st.set_ending(game, "KEEPER").ending == "KEEPER"
     with pytest.raises(ValueError):
         st.set_ending(game, "HAPPY")
+
+
+def test_spend_act_increments_and_next_watch_resets():
+    game = st.new_game("H")
+    game = st.spend_act(st.spend_act(game))
+    assert game.acts == 2
+    assert st.next_watch(game).acts == 0
+
+
+def test_supersede_hides_entry_from_living_journal():
+    game = st.new_game("H")
+    game = st.add_journal(game, "first")
+    game = st.add_journal(game, "second")
+    game = st.supersede_journal(game, 0)
+    living = st.living_journal(game)
+    assert [e.text for _, e in living] == ["second"]
+    assert len(game.journal) == 2

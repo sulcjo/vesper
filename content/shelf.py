@@ -62,6 +62,11 @@ def _remy(state: GameState, io: IO) -> None:  # noqa: ARG001
            "count.'", "dim")
     io.say("the margin of the flyleaf holds the four words, first of "
            "all their sayings: STILL THERE. STILL HERE.", "dim")
+    if st.has_flag(state, "LEGACY_ANSWER"):
+        io.say("and beneath them, in a hand you do not know and the "
+               "book has no business containing — smaller, newer, the "
+               "ink not yet browned: THE COUNT WAS RIGHT. ONE OF US "
+               "MADE IT RIGHT.", "alert")
 
 
 def _sever(state: GameState, io: IO) -> None:  # noqa: ARG001

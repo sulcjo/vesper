@@ -24,6 +24,16 @@ python3 vesper.py --fast    # no typewriter pacing (or VESPER_FAST=1)
 Progress autosaves after every command (to `~/.vesper/`, override with
 `VESPER_HOME`). A watch takes a few minutes; a full game runs about an
 hour, more if you read the old keepers' volumes — and you should.
+
+The night is only so long: duties are always free, but the deeper
+things — walking the rooms, the eyepiece, the wire, the shelf, the
+pen — tire an old man. Choose. Single letters work for the common
+boards (`S D E L W T J R`). What you write in the journal matters
+more than you may at first suppose, and what fades can be fought:
+`JOURNAL COPY`.
+
+The station remembers finished watches. That is all that will be
+said about that.
 Type `HELP` at the prompt for the station's boards. `Ctrl+C` skips the
 typewriter effect for the current passage.
 

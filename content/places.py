@@ -59,13 +59,19 @@ def _dome_9(state: GameState, io: IO) -> None:
 
 
 _DOME: dict[int, Scene] = {
-    1: ("the dome smells of cold brass and machine oil. the chair "
-        "knows your shape; it should, it has had forty years to learn "
-        "it. on the arm, half under your sleeve, are the initials "
-        "E.W., cut with a pocket knife by a woman who is now a star's "
-        "name and nothing else.",
-        "you rest your fingers on the letters, once, the way you touch "
-        "a railing on a stair you trust."),
+    1: ("the dome smells of cold brass and machine oil, with something "
+        "older underneath — dust warmed and re-warmed by lamplight "
+        "until it has a kind of toast to it, the smell of every "
+        "observatory there has ever been. one red work-lamp burns by "
+        "the desk to spare your night eyes. somewhere up in the dark "
+        "of the slit gears tick as the metal cools, a small patient "
+        "sound, like the building counting to itself.",
+        "the chair knows your shape; it should, it has had forty "
+        "years to learn it. on the arm, half under your sleeve, are "
+        "the initials E.W., cut with a pocket knife by a woman who "
+        "is now a star's name and nothing else. you rest your "
+        "fingers in the grooves of the letters, once, the way you "
+        "touch a railing on a stair you trust."),
     2: "the shutter is closed and the dome is a held breath. you can "
        "hear the grease cooling in the gears. through the vent, very "
        "far off, the generator keeps its pulse. a dome is a good "
@@ -124,11 +130,14 @@ _DOME: dict[int, Scene] = {
 
 _CORRIDOR: dict[int, Scene] = {
     1: "forty paces of corridor, lit in sections that wake ahead of "
-       "you and time out behind. walking it, you are always in one "
-       "moving island of light. behind you, in the dark, is the rest "
-       "of the human race. you have made this joke to yourself for "
-       "forty years. it has stopped being a joke so gradually you "
-       "cannot date the change.",
+       "you with a click and a slow amber flutter, and time out "
+       "behind with no sound at all. your boots ring differently "
+       "over the fuel lines — you could walk it deaf and know where "
+       "you were. walking it, you are always in one moving island "
+       "of light. behind you, in the dark, is the rest of the human "
+       "race. you have made this joke to yourself for forty years. "
+       "it has stopped being a joke so gradually you cannot date "
+       "the change.",
     2: "over the dome-end lintel, cut deep and filled with brass: "
        "XL PACES. Sever's work — the second keeper measured "
        "everything, doorways, ration tins, his own stride, and wrote "
@@ -194,12 +203,16 @@ def _quarters_9(state: GameState, io: IO) -> None:
 
 
 _QUARTERS: dict[int, Scene] = {
-    1: ("cot, chest, kettle, clock. the dent in the pillow is the "
+    1: ("cot, chest, kettle, clock. the room smells of wool and "
+        "paraffin and the ghost of ten thousand cups of tea, and it "
+        "is exactly as large as a life needs to be, which surprised "
+        "you once and does not now. the dent in the pillow is the "
         "truest record on the station: proof of ten thousand sleeps, "
         "unfalsifiable, in a medium the archive cannot reach.",
-        "you make tea. the tin is down to dust and stems, and you "
-        "make it anyway, because the kettle's rattle is one of the "
-        "voices you still get to hear."),
+        "you sit on the cot a moment and let the springs say what "
+        "they say. the tea tin on the shelf is down to dust and "
+        "stems. you will make it anyway, later, because the kettle's "
+        "rattle is one of the voices you still get to hear."),
     2: "the sign-in book lives on the shelf by the door, fat with "
        "years, its spine rebroken and relaid twice. five hands run "
        "through it: Remy's upright strokes, Sever's draughtsman "
@@ -247,9 +260,13 @@ _QUARTERS: dict[int, Scene] = {
 
 _PLANT: dict[int, Scene] = {
     1: "the plant room is two lamps, a jar, and the only green in "
-       "four light-decades. the manual calls it a psychological "
-       "provision. the manual has never stood in here at 0300 with "
-       "its face in the leaves, breathing.",
+       "four light-decades. the lamps hum at a pitch just above the "
+       "generator's, and the air in here is different air — thick, "
+       "wet, faintly sweet, the condensation crawling the inside of "
+       "the jar in beads that gather and let go, gather and let go. "
+       "the manual calls it a psychological provision. the manual "
+       "has never stood in here at 0300 with its face in the "
+       "leaves, breathing.",
     2: "it is orchard stock, the plant — a cutting of a cutting of a "
        "tree that stood at Hollow Hill when Hollow Hill stood, come "
        "up the scarp on the last shuttle in a tin of wet cloth, "
@@ -301,10 +318,15 @@ _PLANT: dict[int, Scene] = {
 # ── generator room — the heat ─────────────────────────────────────────
 
 _GENERATOR: dict[int, Scene] = {
-    1: "warm, loud, honest. the generator room is the one place on "
-       "the station where the dark has to shout to be heard. you "
-       "check the fuel figure against the ledger, an arithmetic you "
-       "could do dead, and may.",
+    1: "the heat meets you at the door like a hand on the chest. "
+       "warm, loud, honest — the generator room is the one place on "
+       "the station where the dark has to shout to be heard, and it "
+       "loses. fuel oil sits in the air thick enough to taste, and "
+       "the deckplates carry the rotation up through your boots and "
+       "into your teeth, a rhythm your body has kept time with for "
+       "so long that silence, when you leave, always arrives like a "
+       "stumble. you check the fuel figure against the ledger, an "
+       "arithmetic you could do dead, and may.",
     2: "the fuel is the desert, strictly speaking: Sever's "
        "synthesiser cracks the grey glass outside into something "
        "the burners will take, a trick he reverse-engineered from a "
@@ -426,8 +448,12 @@ def _outside_scene(state: GameState, io: IO) -> GameState:
     io.say("AIRLOCK: CYCLING. TETHER LIVE. BOTTLE LIVE.", "os")
     io.pause(0.6)
     io.say("outside is the sound of your own blood and nothing else "
-           "whatsoever. the ground is grey glass to the horizon. above "
-           "you the sky stands the way it has stood all your life — "
+           "whatsoever — that, and what the boots bring up: the "
+           "ground's dry crunch arriving through your soles and "
+           "shinbones, felt more than heard, each step a small "
+           "report filed by the body. the ground is grey glass to "
+           "the horizon, dunes of it, frozen mid-gesture. above you "
+           "the sky stands the way it has stood all your life — "
            "except in the east, where there is now a margin with "
            "nothing written in it.")
     io.say("you walk the line to the array, hand over hand along the "

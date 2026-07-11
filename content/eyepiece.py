@@ -13,12 +13,18 @@ from engine.io import IO
 from engine.state import GameState
 
 _MAG_LOOK = {
-    1: "it fills the eye. after so much ember-red, a bright source feels "
+    1: "the eyecup is cold against the orbit of your eye, and then "
+       "there is no eyecup, no dome, no you — just the light, filling "
+       "the field. after so much ember-red, a bright source feels "
        "almost rude. you let it hurt a little.",
-    2: "steady, small, certain. the kind of light the catalogue was "
-       "invented for.",
-    3: "faint. you have to look slightly away to see it at all, the old "
-       "trick, letting the edge of the eye do the believing.",
+    2: "you settle into the chair, find the focus by touch — the "
+       "knurled wheel, a quarter-turn past the sticking point — and "
+       "there it is. steady, small, certain. the kind of light the "
+       "catalogue was invented for.",
+    3: "faint. your own breath fogs the eyepiece and you wait out the "
+       "clearing, and even then you have to look slightly away to "
+       "see it at all — the old trick, letting the edge of the eye "
+       "do the believing.",
 }
 
 

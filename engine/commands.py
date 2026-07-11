@@ -139,9 +139,13 @@ def _scan(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
     elif catalog.new_removals(state):
         io.say("PLOT DISAGREES WITH ARCHIVE COUNT. RUN DIFF.", "alert")
     elif state.watch == 1:
-        io.say("all present. you initial the count the way you have "
-               "initialled ten thousand counts, and the initialling is "
-               "the point: somebody looked.", "dim")
+        io.say("the plotter draws the sector line by line, the stylus "
+               "whispering across the paper like something small "
+               "walking on snow, and the sky you know assembles "
+               "itself dot by dot under the red lamp. all present. "
+               "you initial the count the way you have initialled "
+               "ten thousand counts, and the initialling is the "
+               "point: somebody looked.", "dim")
     return state, None
 
 

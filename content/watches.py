@@ -103,9 +103,17 @@ def wake(state: GameState, io: IO) -> GameState:
 
 def _wake_1(state: GameState, io: IO) -> None:
     io.say("you wake before the bell, as always. forty years will set a "
-           "clock in the meat of you. kettle, dry tea, the two-minute "
-           "walk from quarters to the dome with your hand trailing the "
-           "cold rail the whole way — the little liturgy, done in the "
+           "clock in the meat of you. the quarters hold their overnight "
+           "cold — a cold with the texture of iron — and you dress "
+           "inside the blanket's last warmth the way you have ten "
+           "thousand times, boots last, laces by feel.")
+    io.say("the kettle knocks against its element as it heats: three "
+           "knocks, a pause, two more, the same stammer it has had "
+           "since Weir's day. tea the colour of rust, mostly stems "
+           "now. you drink half of it standing and carry the rest, "
+           "and the two-minute walk to the dome goes as it always "
+           "goes — free hand trailing the rail, steel burning cold "
+           "through the fingerless glove — the little liturgy, in the "
            "same order since the morning you inherited it.")
     if st.has_flag(state, "LEGACY"):
         io.say("the sign-in book felt heavy under your pen this morning, "
@@ -126,10 +134,11 @@ def _wake_2(state: GameState, io: IO) -> None:  # noqa: ARG001
            "pointing finger, the moving lips. you woke with your hand "
            "already shaping it under the blanket, index finger ticking "
            "off the dark, and lay still until it stopped.")
-    io.say("the kettle takes longer than it used to, or you have started "
-           "timing it. either way: tea, rail, dome. the sky is where "
-           "you left it. you would notice. it is your whole profession "
-           "to notice.")
+    io.say("the kettle takes longer than it used to, or you have "
+           "started timing it — the element glowing its dull orange a "
+           "long while before the water believes it. either way: tea, "
+           "rail, dome. the sky is where you left it. you would "
+           "notice. it is your whole profession to notice.")
 
 
 def _wake_3(state: GameState, io: IO) -> None:  # noqa: ARG001
@@ -146,11 +155,13 @@ def _wake_3(state: GameState, io: IO) -> None:  # noqa: ARG001
 
 def _wake_4(state: GameState, io: IO) -> None:  # noqa: ARG001
     io.say("the generator woke you. not by stopping — by hesitating, "
-           "one beat held too long, the way a sentence hesitates before "
-           "bad news is put in it. you lay in the dark timing the "
-           "rotation against the clock's tick until both agreed to go "
-           "on. the station is old. you are old. the arrangement has "
-           "always been that you fail last.")
+           "one beat held too long, the way a sentence hesitates "
+           "before bad news is put in it. you lay in the dark with "
+           "your palm flat against the wall, reading the rotation "
+           "through the plating the way a doctor reads a wrist, "
+           "timing it against the clock's tick until both agreed to "
+           "go on. the station is old. you are old. the arrangement "
+           "has always been that you fail last.")
 
 
 def _wake_5(state: GameState, io: IO) -> None:  # noqa: ARG001
@@ -212,10 +223,12 @@ def _wake_7(state: GameState, io: IO) -> None:  # noqa: ARG001
 
 def _wake_8(state: GameState, io: IO) -> None:  # noqa: ARG001
     io.say("frost on the inside of the corridor now, fine as breath on "
-           "glass. the station is not colder. you checked the figures "
-           "twice. it is as if the walls have started believing the "
-           "east instead of the thermometer, and you cannot entirely "
-           "blame them.")
+           "glass. it comes away under your thumbnail in a little "
+           "white curl and melts against the skin without wetting it, "
+           "there and then simply not. the station is not colder. you "
+           "checked the figures twice. it is as if the walls have "
+           "started believing the east instead of the thermometer, "
+           "and you cannot entirely blame them.")
     io.say("SUIT PROTOCOL UNSEALED. EXTERIOR WORK IS AVAILABLE THIS "
            "WATCH. (SUIT, then OUTSIDE.)", "os")
     io.say("the array wants sweeping — the feed-horns fur up with "

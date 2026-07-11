@@ -53,10 +53,14 @@ def play(state: GameState, io: IO) -> None:
 
 
 def _keeper(state: GameState, io: IO) -> None:
-    io.say("you file the last report and then, because the watch is not "
-           "over until the watch is over, you tidy the dome. chair "
-           "square to the desk. eyepiece capped. the crank wiped of "
-           "your handprints, brass given back to brass.")
+    io.say("you file the last report and then, because the watch is "
+           "not over until the watch is over, you tidy the dome. "
+           "chair square to the desk. eyepiece capped, the little "
+           "brass lid seating with its familiar half-turn and click. "
+           "the crank wiped of your handprints with the soft rag "
+           "kept for nothing else, brass given back to brass. the "
+           "red lamp you leave burning. some rooms should not have "
+           "to be dark before their time.")
     io.pause(0.6)
     io.say("the east comes on the way morning used to, when there were "
            "mornings: not arriving anywhere, simply being the case, "
@@ -70,9 +74,12 @@ def _keeper(state: GameState, io: IO) -> None:
                "that the count was yours.")
     io.say("you take up the journal and write the sector's final entry "
            "by hand, in ink, in the margin, where the first keeper "
-           "wrote. four words. you know the four words. every keeper "
-           "has known the four words, and now there is nothing left "
-           "for them to be about except the hand that writes them.")
+           "wrote. the pen scratches in the quiet — the loudest thing "
+           "left in the sky — and the ink goes down wet and black "
+           "and certain. four words. you know the four words. every "
+           "keeper has known the four words, and now there is "
+           "nothing left for them to be about except the hand that "
+           "writes them.")
     io.say("STILL THERE. STILL HERE.", "alert")
     io.pause(0.8)
     io.say("the archive will not hold this. paper holds it. paper, and "
@@ -146,10 +153,13 @@ def _quiet(state: GameState, io: IO) -> None:
         io.say("you leave the journal open on the desk, and look once "
                "at what the fading has decided to spare:", "dim")
         _replay_pages(state, io, [0.9])
-    io.say("you lie down with your boots off. the tick and the pulse "
-           "keep the room the size of a room. somewhere east of "
-           "everything, the count arrives at its last number, and it "
-           "is not your number, because you have set yours down.")
+    io.say("you lie down with your boots off, and the weight that "
+           "leaves you is not the boots. the blanket's wool is rough "
+           "under your chin exactly the way it has been rough for "
+           "forty years, and the tick and the pulse keep the room "
+           "the size of a room. somewhere east of everything, the "
+           "count arrives at its last number, and it is not your "
+           "number, because you have set yours down.")
     io.say("this is not surrender, whatever box the Bureau's forms "
            "would have wanted ticked. surrender requires an enemy, "
            "and the east was never that; it is barely even an it. "
@@ -171,9 +181,12 @@ def _quiet(state: GameState, io: IO) -> None:
 
 
 def _answer(state: GameState, io: IO) -> None:
-    io.say("you key the transmitter. forty years of receiving, and the "
-           "sending key is stiff as a new boot. you press it and the "
-           "carrier goes out of you — out of the station — east.")
+    io.say("you key the transmitter. forty years of receiving, and "
+           "the sending key is stiff as a new boot — it takes real "
+           "weight, the whole of two fingers, and closes with a "
+           "click you feel in the bones of the hand like a latch "
+           "going home. the carrier goes out of you — out of the "
+           "station — east.")
     if state.final_words:
         sent = state.final_words
         io.say(f"“{sent},” you send, and the east takes the words the "
@@ -231,7 +244,10 @@ def _cold(state: GameState, io: IO) -> None:  # noqa: ARG001
            "through the walls in the order the manual would predict, "
            "corridor first, then quarters, closing the station down "
            "section by section like a man turning off lights behind "
-           "him.")
+           "him. your breath begins to show, then to settle — a fine "
+           "frost gathering on the blanket's wool where it crosses "
+           "your chest, your own small weather, the last weather "
+           "there will ever be indoors.")
     io.say("you had warnings. you counted them at the time — that is "
            "the bitter arithmetic of it, you counted everything, and "
            "you let this number alone go by unattended.")

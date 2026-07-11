@@ -34,10 +34,13 @@ _ENDING_PHRASES = {
 
 
 def sign_in(io: IO, ledger: list[dict] | None = None) -> str:
-    io.say("the sign-in book is paper. it predates the terminal, and "
-           "every keeper has signed it at the top of every watch, in "
-           "ink, because the first duty of the watch is to say who is "
-           "keeping it.", "dim")
+    io.say("the sign-in book is paper — swollen with years, corners "
+           "worn round as beach stones, the leather of its spine "
+           "shiny where five lifetimes of thumbs have opened it to "
+           "the working page. it predates the terminal. every keeper "
+           "has signed it at the top of every watch, in ink, because "
+           "the first duty of the watch is to say who is keeping it.",
+           "dim")
     ledger = ledger or []
     if ledger:
         io.say("SIGN-IN BOOK — LAST PAGES:", "os")

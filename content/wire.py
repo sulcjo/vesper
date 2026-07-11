@@ -81,9 +81,17 @@ def _scene_hollow_hill(state: GameState, io: IO) -> GameState:
     io.say("BAND 9 — REGISTERED BEACON: HOLLOW HILL ENCLAVE.", "os")
     io.pause()
     io.say("the Hollow Hill loop. a woman's voice, nine hundred years "
-           "dead, reading the all-clear in a language you had to learn "
-           "from a grammar book. safe harbour, she says, more or less. "
-           "come in slowly. mind the shoals.")
+           "dead, reading the all-clear in a language you had to "
+           "learn from a grammar book — the vowels worn smooth as "
+           "river stones by nine centuries of playback. safe "
+           "harbour, she says, more or less. come in slowly. mind "
+           "the shoals.")
+    io.say("and behind her voice, if you close your eyes and lean "
+           "into the gain, the room she sat in: the creak of a "
+           "chair, a door shutting somewhere down a hall, weather — "
+           "actual weather — ticking against a window. a town's "
+           "last ordinary afternoon, pressed flat into the tape "
+           "like a flower kept in a book nobody owns anymore.", "dim")
     io.say("nobody has gone in slowly for centuries. the tape survived "
            "the town. you have long since stopped deciding whether that "
            "is terrible or kind.")
@@ -189,7 +197,9 @@ def _scene_first_address(state: GameState, io: IO) -> GameState:
         spoken = draw.erase_words(line, 0.3, seed=state.watch)
         io.say("a voice. not the hiss arranging itself into a voice — a "
                "voice, level, unhurried, without breath where breath "
-               "should be. it says:")
+               "should be, and with no room behind it: no chair, no "
+               "walls, no distance, sound arriving the way print "
+               "arrives on a page. it says:")
         io.say(f"    {spoken}", "alert")
         io.say("your own words. the ones you wrote by hand, in the "
                "journal, which has no wire to it and no eyes on it and "

@@ -47,8 +47,8 @@ def _scene_first_night(state: GameState, io: IO) -> GameState:
     io.say("the hiss. the oldest sound there is — the exhaled breath "
            "of everything that ever burned, thinned across the dark "
            "until it is texture more than voice. Okonkwo called "
-           "listening to it 'taking the sea air'. there has never "
-           "been a sea within four light-years of this chair.")
+           "listening to it 'taking the sea air'. there is no living "
+           "sea left within four light-years of this chair.")
     io.say("you sit with it a while anyway, the way he taught you on "
            "your first watch: gain low, eyes shut, until the ear "
            "stops hunting for words in it and lets it be weather. "

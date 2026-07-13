@@ -13,7 +13,7 @@ BOOT_LINES = (
     "ARCHIVE .............. MOUNTED (READ DEGRADED)",
     "CATALOGUE ............ MOUNTED",
     "WIRE ................. LIVE",
-    "BUREAU LINK .......... OPEN (LAST INBOUND: 214 EPOCHS)",
+    "BUREAU LINK .......... OPEN (LAST HUMAN INBOUND: 214 EPOCHS)",
     "DOME ................. SEALED",
     "",
 )

@@ -119,7 +119,9 @@ def _keeper(state: GameState, io: IO) -> None:
     io.say("the count was kept. all the way to the end of counting, "
            "the count was kept, and it was kept by you.")
     io.say("", "prose")
-    io.say("EPOCH 71,208. CATALOGUE CLOSED IN GOOD ORDER.", "os")
+    io.say("FINAL WORKING EPOCH: 71,207.", "os")
+    io.say("CATALOGUE CLOSED AT EPOCH CHANGE: 71,208. IN GOOD "
+           "ORDER.", "os")
     io.say("OBSERVER OF RECORD: PRESENT.", "os")
 
 

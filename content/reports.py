@@ -32,12 +32,22 @@ def file_report(state: GameState, io: IO) -> GameState:
     observer = "REMY" if st.has_flag(state, "QUESTION_ASKED") else state.observer
 
     io.say(f"COMPOSING SECTOR REPORT — EPOCH {epoch(state):,}", "os")
-    io.say(f"  SOURCES CONFIRMED THIS EPOCH: {visible}", "os")
-    if removed and st.has_flag(state, f"SCANNED_{state.watch}"):
-        io.say(f"  DISCREPANCIES NOTED: {len(removed)} "
-               f"(SEE ATTACHED ANNOTATIONS)", "os")
+    if st.has_flag(state, f"SCANNED_{state.watch}"):
+        io.say(f"  SOURCES CONFIRMED THIS EPOCH: {visible}", "os")
+        if removed:
+            io.say(f"  DISCREPANCIES NOTED: {len(removed)} "
+                   f"(SEE ATTACHED ANNOTATIONS)", "os")
+        else:
+            io.say("  DISCREPANCIES NOTED: NONE", "os")
     else:
-        io.say("  DISCREPANCIES NOTED: NONE", "os")
+        io.say("  SOURCES CONFIRMED THIS EPOCH: UNAVAILABLE — NO "
+               "CURRENT SCAN", "os")
+        io.say("  DISCREPANCY STATUS: NOT EVALUATED", "os")
+        io.say("  REPORT STATUS: INCOMPLETE", "os")
+        io.say("the form takes the emptiness without comment. forms "
+               "always do. an unscanned sky is not a lie, exactly; "
+               "it is a night the record will show you looked away.",
+               "dim")
     io.say(f"  OBSERVER OF RECORD: {observer.upper()}", "os")
     io.say("TRANSMITTING TO BUREAU OF THE CATALOGUE ...", "os")
     io.pause(0.6)
@@ -57,7 +67,7 @@ def _receipt(state: GameState, io: IO) -> None:
         if watch == 1:
             io.say("the receipt is the same receipt it has always been. "
                    "there is a comfort in a machine that has answered "
-                   "four thousand keepers with the same shrug. you are "
+                   "four thousand reports with the same shrug. you are "
                    "in a long line of people it did not listen to.",
                    "dim")
         return

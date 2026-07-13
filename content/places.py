@@ -68,10 +68,12 @@ _DOME: dict[int, Scene] = {
         "sound, like the building counting to itself.",
         "the chair knows your shape; it should, it has had forty "
         "years to learn it. on the arm, half under your sleeve, are "
-        "the initials E.W., cut with a pocket knife by a woman who "
-        "is now a star's name and nothing else. you rest your "
-        "fingers in the grooves of the letters, once, the way you "
-        "touch a railing on a stair you trust."),
+        "two initials, E. and W., cut with a pocket knife — not by "
+        "Weir; her volume says she only sat still and let it "
+        "happen, which for Weir was a kind of vow. the E. has no "
+        "surname anywhere in the record. you rest your fingers in "
+        "the grooves of the letters, once, the way you touch a "
+        "railing on a stair you trust."),
     2: "the shutter is closed and the dome is a held breath. you can "
        "hear the grease cooling in the gears. through the vent, very "
        "far off, the generator keeps its pulse. a dome is a good "
@@ -279,10 +281,9 @@ _PLANT: dict[int, Scene] = {
        "opinion, and you have decided to share it.",
     4: "pencil marks climb the jar's shoulder where four keepers "
        "have measured the reach of it, dated in four hands. you "
-       "hold your flat palm at the newest leaf and add a mark. "
-       "growth, logged. somewhere east of everything the sky is "
-       "being subtracted, and in this room, one centimetre at a "
-       "time, arithmetic still runs the other way.",
+       "hold your flat palm at the newest leaf and add a mark, "
+       "dated, in your own hand under the other four. growth, "
+       "logged.",
     5: "you have moved the second chair in here — Weir's chair, by "
        "the inventory, though she never sat in it that you know of. "
        "you sit with the plant the way you would sit with a "
@@ -350,8 +351,8 @@ _GENERATOR: dict[int, Scene] = {
        "line fainted to pink under forty years of heat. Okonkwo "
        "held that a keeper's real instrument was the station "
        "entire, and that paint was calibration. you get the line "
-       "true on the first pass. the eye still serves. note it in "
-       "the margin somewhere: the eye still serves.",
+       "true on the first pass. you rinse the brush, cap the tin, "
+       "and enter the time in the ledger.",
     6: "steady tonight. you put your palm flat on the housing and "
        "count the rotation against your own pulse, two rhythms "
        "neither young, both regular, and stand there a while in "
@@ -407,7 +408,8 @@ def suit_check(state: GameState, which: str, io: IO) -> GameState:
                "about you. keep it that way.", "dim")
         return state
     if not which:
-        done = [c for c in SUIT_CHECKS if st.has_flag(state, f"SUIT_{c}")]
+        done = [c for c in SUIT_CHECKS
+                if st.has_flag(state, f"SUIT_{c}_{state.watch}")]
         io.say("SUIT PROTOCOL — CHECKS: " + ", ".join(
             f"{c}[{'DONE' if c in done else 'PENDING'}]" for c in SUIT_CHECKS),
             "os")
@@ -418,7 +420,7 @@ def suit_check(state: GameState, which: str, io: IO) -> GameState:
         return state
     io.say(f"SUIT PROTOCOL — {which}", "os")
     io.say(_CHECK_SCENES[which])
-    return st.add_flag(state, f"SUIT_{which}")
+    return st.add_flag(state, f"SUIT_{which}_{state.watch}")
 
 
 def go_outside(state: GameState, io: IO) -> GameState:
@@ -427,20 +429,30 @@ def go_outside(state: GameState, io: IO) -> GameState:
         io.say("you stand at the inner door a moment all the same, "
                "reading the frost patterns like a page.", "dim")
         return state
-    missing = [c for c in SUIT_CHECKS if not st.has_flag(state, f"SUIT_{c}")]
+    missing = [c for c in SUIT_CHECKS
+               if not st.has_flag(state, f"SUIT_{c}_{state.watch}")]
     if missing:
-        if not st.has_flag(state, "OUTSIDE_WARNED"):
+        if not st.has_flag(state, f"OUTSIDE_WARNED_{state.watch}"):
             io.say("AIRLOCK: SUIT PROTOCOL INCOMPLETE — " +
                    ", ".join(missing), "alert")
             io.say("AIRLOCK: OVERRIDE IS AVAILABLE. OVERRIDE IS NOT "
-                   "ADVISED. A SECOND ATTEMPT WILL BE TREATED AS "
-                   "OVERRIDE.", "alert")
+                   "ADVISED. A SECOND ATTEMPT THIS WATCH WILL BE "
+                   "TREATED AS OVERRIDE.", "alert")
             io.say("the door would open. doors do not care. that has "
                    "always been the thing about doors.", "dim")
-            return st.add_flag(state, "OUTSIDE_WARNED")
+            return st.add_flag(state, f"OUTSIDE_WARNED_{state.watch}")
         io.say("AIRLOCK: OVERRIDE ACCEPTED.", "alert")
         state = st.add_flag(state, "OUTSIDE_OVERRIDE")
         return st.set_ending(state, "OUTSIDE")
+    if st.has_flag(state, f"EXTERIOR_DONE_{state.watch}"):
+        io.say("AIRLOCK: CYCLING. TETHER LIVE. BOTTLE LIVE.", "os")
+        io.say("the array is swept; the couplings hold; your own boot "
+               "prints from the last trip lie in the regolith, crisp "
+               "as the hour you made them, and will outlast the "
+               "catalogue. you stand at the top of the line a while, "
+               "hand on the tether, not walking it, and go back in.")
+        io.say("AIRLOCK: CYCLE COMPLETE. NO WORK LOGGED.", "os")
+        return state
     return _outside_scene(state, io)
 
 
@@ -494,7 +506,8 @@ def _outside_scene(state: GameState, io: IO) -> GameState:
                    "station is loud. you had not known the generator "
                    "was a lullaby until now.")
             io.say("AIRLOCK: CYCLE COMPLETE. EXTERIOR WORK LOGGED.", "os")
-            return st.add_flag(state, "WENT_OUTSIDE")
+            return st.add_flag(state, "WENT_OUTSIDE",
+                               f"EXTERIOR_DONE_{state.watch}")
         if line:
             io.say(line)
     return st.set_ending(state, "OUTSIDE")

@@ -204,3 +204,52 @@ def test_deaths_print_a_surviving_journal_fragment():
                                        "and i let it.", "."])
     assert state.ending == "COLD"
     assert "PAPER RECORD — UNFILED" in io.transcript()
+
+
+def test_unscanned_report_is_explicitly_incomplete():
+    io = ScriptedIO()
+    state = st.new_game("Halvard")
+    state, _ = commands.dispatch(state, "REPORT", io)
+    transcript = io.transcript()
+    assert "NO CURRENT SCAN" in transcript
+    assert "REPORT STATUS: INCOMPLETE" in transcript
+    assert st.has_flag(state, "REPORTED_1")  # it still files
+
+
+def test_suit_checks_expire_between_watches():
+    script = (_TO_WATCH_8
+              + ["SUIT SEALS", "SUIT AIR", "SUIT TETHER",
+                 "TEND GENERATOR", "SLEEP", "OUTSIDE", "OUTSIDE"])
+    state, io = _play(script)
+    # checks were done on watch 8; the door on watch 9 must not honor
+    # them - second attempt without re-checking is an override death
+    assert state.ending == "OUTSIDE"
+    assert "OVERRIDE" in io.transcript()
+
+
+def test_exterior_work_does_not_repeat_within_a_watch():
+    script = (_TO_WATCH_8
+              + ["SUIT SEALS", "SUIT AIR", "SUIT TETHER",
+                 "OUTSIDE", "OUTSIDE"])
+    state, io = _play(script, answers=["RETURN"])
+    transcript = io.transcript()
+    assert "NO WORK LOGGED" in transcript
+    assert transcript.count("two couplings re-seated") == 1
+    assert state.ending is None
+
+
+def test_final_watch_diff_reports_sector_loss():
+    script = FULL_WATCH * 8 + ["SCAN", "DIFF"]
+    state, io = _play(script)
+    transcript = io.transcript()
+    assert "NO ADDRESSABLE COORDINATES" in transcript
+    assert "INSTRUMENT FIELD LOSS: 33%" in transcript
+
+
+def test_okonkwo_shuttle_dates_precede_player_tenure():
+    from content import shelf as shelf_mod
+    io = ScriptedIO()
+    shelf_mod.open_shelf(st.new_game("H"), "OKONKWO", io)
+    transcript = io.transcript()
+    assert "52,300" in transcript
+    assert "63,300" not in transcript

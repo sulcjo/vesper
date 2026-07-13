@@ -166,8 +166,8 @@ def _wake_4(state: GameState, io: IO) -> None:  # noqa: ARG001
 
 def _wake_5(state: GameState, io: IO) -> None:  # noqa: ARG001
     io.say("you woke thinking of Okonkwo — the keeper who trained you "
-           "when you first came up the scarp, a boy apprenticed two "
-           "watches of the book before your own began. sixty days of "
+           "when you first came up the scarp, a boy of two-and-twenty, "
+           "two names above yours in the sign-in book. sixty days of "
            "him saying the same sentence at the same hour: the "
            "instrument is the station; the observer is the "
            "instrument's conscience. you thought he was being poetic. "

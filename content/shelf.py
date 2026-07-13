@@ -107,11 +107,11 @@ def _okonkwo(state: GameState, io: IO) -> None:  # noqa: ARG001
            "hearth by hearth, that the past is more comfortable "
            "than the future, and they are living in it. i do not "
            "blame them. i log them. those are different duties.'")
-    io.say("'the shuttle did not come at epoch 63,300. nor 63,400. "
+    io.say("'the shuttle did not come at epoch 52,300. nor 52,400. "
            "i will hold the door. a kept schedule is a lamp in a "
            "window: it is not for the keeper. it is for whoever is "
            "still out there deciding whether to come home.'")
-    io.say("and near the end, to his successor, to you: 'the "
+    io.say("and near the end, to the apprentice who would one day follow Weir — to you: 'the "
            "instrument is the station; the observer is the "
            "instrument's conscience. when the count grows strange — "
            "it will, boy, everything old grows strange — remember "

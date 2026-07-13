@@ -160,6 +160,19 @@ def _diff(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
     state = st.add_flag(state, f"DIFFED_{state.watch}")
     if not removals:
         io.say("DIFF: PLOT AGREES WITH ARCHIVE.", "os")
+        if catalog.front_active(state):
+            io.say("SECTOR E-40 : E-59 — NO ADDRESSABLE COORDINATES.",
+                   "os")
+            io.say("HISTORICAL EXTENT OF SECTOR: NO RECORD.", "os")
+            io.say("INSTRUMENT FIELD LOSS: 33%.", "alert")
+            io.say("agreement, one last time. a third of the field is "
+                   "gone and the diff has nothing to say, because the "
+                   "archive lost the same third at the same instant, "
+                   "the two of them nodding along together like "
+                   "witnesses who have agreed on a story. your "
+                   "journal, in the drawer, in ink, remains the "
+                   "minority report.", "dim")
+            return state, None
         if state.watch == 1:
             io.say("agreement, the dull gold standard of the trade. you "
                    "would not trade it for interesting. you have seen "

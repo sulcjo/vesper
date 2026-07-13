@@ -70,3 +70,10 @@ def test_erase_words_survives_awkward_word_counts():
     for seed in range(40):
         result = draw.erase_words(text, 0.9, seed=seed)
         assert draw.GONE_CHAR in result
+
+
+def test_banner_renders_double_ruled_and_fixed_width():
+    banner = draw.render_banner(["VESPER STATION", "WATCH 1 OF 9"], width=30)
+    assert banner[0].startswith("╔") and banner[-1].startswith("╚")
+    assert all(len(line) == 34 for line in banner)
+    assert "VESPER STATION" in banner[1]

@@ -11,25 +11,32 @@ from engine import commands, persistence, state as st, term
 from engine.io import IO
 from engine.state import FINAL_WATCH, GameState
 
-_KIND_STYLE = {
-    "os": ((term.Style.GREEN,), 0.003),
-    "prose": ((), term.CHAR_DELAY),
-    "dim": ((term.Style.DIM,), term.CHAR_DELAY),
-    "alert": ((term.Style.AMBER, term.Style.BOLD), term.CHAR_DELAY),
+_KIND_PACE = {
+    "os": 0.003,
+    "prose": term.CHAR_DELAY,
+    "dim": term.CHAR_DELAY,
+    "alert": term.CHAR_DELAY,
 }
+
+# the man's lines sit in an indented column; the machine's flush left
+_KIND_INDENT = {"prose": 2, "dim": 2}
 
 
 class TerminalIO:
     def __init__(self) -> None:
         self.eof_reached = False
+        self.watch = 1  # the shell keeps this current; colors cool late
 
     def say(self, text: str, kind: str = "prose") -> None:
-        styles, pace = _KIND_STYLE.get(kind, _KIND_STYLE["prose"])
-        term.say(text, *styles, pace=pace)
+        styles = term.kind_styles(kind, self.watch)
+        pace = _KIND_PACE.get(kind, term.CHAR_DELAY)
+        term.say(text, *styles, pace=pace,
+                 indent=_KIND_INDENT.get(kind, 0))
 
     def ask(self, prompt: str) -> str:
         try:
-            return input(term.paint(prompt, term.Style.GREEN))
+            return input(term.paint(prompt,
+                                    *term.kind_styles("os", self.watch)))
         except EOFError:
             self.eof_reached = True
             return "QUIT"
@@ -41,10 +48,23 @@ class TerminalIO:
 
     def art(self, lines: list[str]) -> None:
         for line in lines:
-            print(term.paint(line, term.Style.GREEN))
+            print(term.paint(line, *term.kind_styles("art", self.watch)))
 
     def pause(self, seconds: float = 0.35) -> None:
         term.beat(seconds)
+
+    def hold(self) -> None:
+        """A held breath: wait for enter, quietly. Skipped when fast."""
+        if term.is_fast():
+            return
+        try:
+            input(term.paint("            [enter]",
+                             *term.kind_styles("dim", self.watch)))
+        except (EOFError, KeyboardInterrupt):
+            print()
+
+    def page_break(self) -> None:
+        term.clear_screen()
 
 
 def advance_after_sleep(state: GameState, io: IO) -> GameState:
@@ -57,7 +77,11 @@ def advance_after_sleep(state: GameState, io: IO) -> GameState:
             return st.set_ending(state, "KEEPER")
         return st.set_ending(state, "QUIET")
     watches.close(state, io)
+    io.hold()
     state = st.next_watch(state)
+    if isinstance(io, TerminalIO):
+        io.watch = state.watch
+    io.page_break()
     return watches.wake(state, io)
 
 
@@ -71,6 +95,8 @@ def _start(io: IO, fresh: bool) -> GameState | None:
                    "beginning a new watch.", "dim")
             saved = None
         if saved is not None and saved.ending is None:
+            if isinstance(io, TerminalIO):
+                io.watch = saved.watch
             boot_content.welcome_back(io, saved.observer, saved.watch)
             if saved.watch >= 8:
                 io.say(term.glitch("ARCHIVE .............. MOUNTED "
@@ -93,9 +119,11 @@ def run(argv: list[str]) -> int:
         term.set_fast(True)
     fresh = "--new" in argv
     io = TerminalIO()
+    io.page_break()
     state = _start(io, fresh)
     if state is None:
         return 1
+    io.watch = state.watch
 
     while True:
         persistence.save(state)

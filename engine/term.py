@@ -46,6 +46,59 @@ class Style:
     CYAN = "\033[36m"
 
 
+def _truecolor_enabled() -> bool:
+    if not _color_enabled():
+        return False
+    return os.environ.get("COLORTERM", "") in ("truecolor", "24bit")
+
+
+# The station's monitor: aged phosphor. One palette, five duties.
+_PHOSPHOR = {
+    "os": (87, 217, 119),      # spring green — the machine speaking
+    "prose": (184, 230, 192),  # pale phosphor — the man
+    "dim": (96, 130, 104),     # moss — marginalia
+    "alert": (255, 176, 0),    # amber — warnings
+    "art": (111, 207, 143),    # mid green — instruments
+}
+
+_FALLBACK = {
+    "os": (Style.GREEN,),
+    "prose": (),
+    "dim": (Style.DIM,),
+    "alert": (Style.AMBER, Style.BOLD),
+    "art": (Style.GREEN,),
+}
+
+
+def _cooled(rgb: tuple[int, int, int], watch: int) -> tuple[int, int, int]:
+    """From watch 7 the whole monitor runs a little colder and dimmer,
+    a few percent per watch — beneath notice, above perception."""
+    if watch < 7:
+        return rgb
+    factor = 1.0 - 0.05 * (watch - 6)
+    r, g, b = rgb
+    return (int(r * factor), int(g * factor), min(255, int(b * 1.04)))
+
+
+def kind_styles(kind: str, watch: int = 1) -> tuple[str, ...]:
+    """Escape prefix(es) for a semantic line kind."""
+    if _truecolor_enabled():
+        r, g, b = _cooled(_PHOSPHOR.get(kind, _PHOSPHOR["prose"]), watch)
+        color = f"\033[38;2;{r};{g};{b}m"
+        if kind == "alert":
+            return (color, Style.BOLD)
+        return (color,)
+    return _FALLBACK.get(kind, ())
+
+
+def clear_screen() -> None:
+    """Wipe to a fresh page. Only on a live terminal — piped output
+    (tests, playtest scripts) must stay an honest transcript."""
+    if _color_enabled() and not is_fast():
+        sys.stdout.write("\033[2J\033[H")
+        sys.stdout.flush()
+
+
 def paint(text: str, *styles: str) -> str:
     if not styles or not _color_enabled():
         return text
@@ -56,7 +109,8 @@ def width() -> int:
     return min(shutil.get_terminal_size((80, 24)).columns, WRAP_WIDTH_MAX)
 
 
-def wrap(text: str) -> list[str]:
+def wrap(text: str, reserve: int = 0) -> list[str]:
+    limit = max(20, width() - reserve)
     lines: list[str] = []
     for raw in text.split("\n"):
         if not raw.strip():
@@ -66,7 +120,7 @@ def wrap(text: str) -> list[str]:
         lines.extend(
             textwrap.wrap(
                 raw,
-                width(),
+                limit,
                 initial_indent="",
                 subsequent_indent=indent,
                 drop_whitespace=True,
@@ -76,9 +130,12 @@ def wrap(text: str) -> list[str]:
     return lines
 
 
-def say(text: str, *styles: str, pace: float = CHAR_DELAY) -> None:
+def say(text: str, *styles: str, pace: float = CHAR_DELAY,
+        indent: int = 0) -> None:
     """Print wrapped text with a typewriter cadence. Ctrl+C skips the effect."""
-    for line in wrap(text):
+    pad = " " * indent
+    for line in wrap(text, reserve=indent):
+        line = pad + line if line else line
         painted = paint(line, *styles)
         if is_fast() or pace <= 0:
             print(painted)

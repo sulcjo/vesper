@@ -7,7 +7,7 @@ on, expressed as the fraction of a written entry that no longer reads.
 from __future__ import annotations
 
 from content import reports
-from engine import state as st
+from engine import draw, state as st
 from engine.io import IO
 from engine.state import FINAL_WATCH, GameState
 
@@ -86,9 +86,12 @@ def duties_line(state: GameState) -> str:
 
 def wake(state: GameState, io: IO) -> GameState:
     io.say("", "os")
-    io.say(f"VESPER STATION — EPOCH {reports.epoch(state):,} — "
-           f"WATCH {state.watch} OF {FINAL_WATCH}", "os")
-    io.say(duties_line(state), "os")
+    io.art(draw.render_banner([
+        f"VESPER STATION — EPOCH {reports.epoch(state):,}",
+        f"WATCH {state.watch} OF {FINAL_WATCH}   ·   "
+        f"THE HOUR: {hour_label(state.acts)}",
+        duties_line(state),
+    ]))
     if st.generator_warning_active(state):
         if state.generator_strikes == 0:
             io.say("NOTICE: GENERATOR CYCLE IRREGULAR. MAINTENANCE IS "

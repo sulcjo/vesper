@@ -125,7 +125,8 @@ def _scan(state: GameState, rest: str, io: IO) -> Result:  # noqa: ARG001
         height=catalog.SKY_HEIGHT,
         absent=catalog.absent_region(state),
     )
-    io.art(["  " + line for line in lines])
+    pad = " " * max(0, (term.WRAP_WIDTH_MAX - catalog.SKY_WIDTH - 2) // 2)
+    io.art([pad + line for line in lines])
     io.say(f"SOURCES RESOLVED: {catalog.count_visible(state)}", "os")
     if already:
         io.say("the sky does not change because you ask it twice. that "

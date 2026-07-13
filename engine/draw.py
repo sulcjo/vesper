@@ -102,6 +102,17 @@ def render_page(lines: list[str], width: int = 56, title: str = "") -> list[str]
     return page
 
 
+def render_banner(lines: list[str], width: int = 60) -> list[str]:
+    """A double-ruled station banner for the top of a watch."""
+    top = "╔" + "═" * (width + 2) + "╗"
+    bottom = "╚" + "═" * (width + 2) + "╝"
+    out = [top]
+    for line in lines:
+        out.append("║ " + line[:width].ljust(width) + " ║")
+    out.append(bottom)
+    return out
+
+
 def erase_words(text: str, fraction: float, seed: int) -> str:
     """Replace a deterministic fraction of words with GONE marks.
     Pure arithmetic selection — no RNG state, stable across runs."""

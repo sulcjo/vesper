@@ -27,6 +27,10 @@ class IO(Protocol):
 
     def pause(self, seconds: float = 0.35) -> None: ...
 
+    def hold(self) -> None: ...
+
+    def page_break(self) -> None: ...
+
 
 class ScriptedIO:
     """Test double: feeds canned answers, records everything said."""
@@ -52,6 +56,12 @@ class ScriptedIO:
             self.said.append(("art", line))
 
     def pause(self, seconds: float = 0.35) -> None:  # noqa: ARG002
+        return
+
+    def hold(self) -> None:
+        return
+
+    def page_break(self) -> None:
         return
 
     def transcript(self) -> str:

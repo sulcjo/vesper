@@ -68,3 +68,21 @@ Engine (`engine/`) is pure and tested; every line of story lives in
 python3 tools/build_pyz.py   # writes dist/vesper.pyz
 python3 dist/vesper.pyz      # runs anywhere Python 3.10+ lives
 ```
+
+## Making it look right
+
+VESPER is a phosphor-terminal game; it deserves a phosphor terminal.
+
+- Any modern terminal (kitty, alacritty, GNOME Terminal, Windows
+  Terminal) gets the full truecolor phosphor palette automatically.
+- Dark background, please. The station has never seen a light theme.
+- A period monospace font helps: IBM 3270, Terminus, JetBrains Mono,
+  or anything with an honest zero.
+- For the full experience, run it inside a CRT emulator:
+
+  ```
+  sudo pacman -S cool-retro-term        # Arch/Manjaro
+  cool-retro-term -e python3 vesper.py
+  ```
+
+  Pick the green profile. Turn the ambient light off. One sitting.

@@ -231,3 +231,21 @@ def test_diff_rows_never_exceed_wrap_width():
     rows = [t for k, t in io.said if k == "os" and "└" in t or "NO SUCH" in t]
     assert rows
     assert all(len(t) <= 78 for t in rows)
+
+
+def test_kind_styles_fallback_without_truecolor(monkeypatch):
+    from engine import term
+    monkeypatch.delenv("COLORTERM", raising=False)
+    monkeypatch.setenv("NO_COLOR", "1")
+    assert term.kind_styles("alert") == (term.Style.AMBER, term.Style.BOLD)
+
+
+def test_kind_styles_truecolor_cools_with_the_watch(monkeypatch):
+    from engine import term
+    monkeypatch.setenv("COLORTERM", "truecolor")
+    monkeypatch.delenv("NO_COLOR", raising=False)
+    monkeypatch.setattr(term, "_color_enabled", lambda: True)
+    early = term.kind_styles("os", watch=1)[0]
+    late = term.kind_styles("os", watch=9)[0]
+    assert early.startswith("\033[38;2;")
+    assert early != late  # the monitor runs colder at the end

@@ -2,6 +2,12 @@
 
 *A terminal game about being the last person still looking up.*
 
+![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
+![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
+![Platform](https://img.shields.io/badge/platform-any%20terminal-lightgrey)
+
+![A watch at Vesper Station: the sign-in book, the epoch banner, and a sector scan resolving star by star](assets/screenshot.png)
+
 This is our universe, very late. The bright stars died as the
 physics always said they would; what remains of the real sky is the
 red dwarfs — Proxima, Barnard's Star, Wolf 359 — burning their
@@ -16,9 +22,17 @@ The scans have begun returning removals: sources that are not dying,
 but un-having-been. The archive agrees they never existed. Your
 journal, written by hand, still lists them.
 
-## Run
+## Get it
 
-Python 3.10+ — standard library only. No install.
+```
+git clone https://github.com/sulcjo/vesper.git
+cd vesper
+python3 vesper.py
+```
+
+Python 3.10+, standard library only — no install, no dependencies.
+
+## Run
 
 ```
 python3 vesper.py           # resume the saved watch, or begin

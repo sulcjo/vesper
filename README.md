@@ -5,6 +5,7 @@
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
 ![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![Platform](https://img.shields.io/badge/platform-any%20terminal-lightgrey)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 ![A watch at Vesper Station: the sign-in book, the epoch banner, and a sector scan resolving star by star](assets/screenshot.png)
 
@@ -31,6 +32,11 @@ python3 vesper.py
 ```
 
 Python 3.10+, standard library only — no install, no dependencies.
+
+**Windows, no Python installed?** Go to
+[Actions → Build Windows executable](../../actions/workflows/build-windows.yml),
+run the workflow (or grab the artifact from the latest run), and download
+`vesper-windows` — a standalone `vesper.exe`, no Python required.
 
 ## Run
 

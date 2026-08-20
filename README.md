@@ -33,10 +33,9 @@ python3 vesper.py
 
 Python 3.10+, standard library only — no install, no dependencies.
 
-**Windows, no Python installed?** Go to
-[Actions → Build Windows executable](../../actions/workflows/build-windows.yml),
-run the workflow (or grab the artifact from the latest run), and download
-`vesper-windows` — a standalone `vesper.exe`, no Python required.
+**Windows, no Python installed?** Download `vesper.exe` from the
+[latest release](../../releases/latest) — standalone, no install, no Python
+required.
 
 ## Run
 

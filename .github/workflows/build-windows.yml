@@ -1,0 +1,28 @@
+name: Build Windows executable
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build standalone executable
+        run: pyinstaller --onefile --name vesper --console vesper.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vesper-windows
+          path: dist/vesper.exe

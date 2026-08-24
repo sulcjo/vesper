@@ -51,7 +51,7 @@ hour, more if you read the old keepers' volumes — and you should.
 
 The night is only so long: duties are always free, but the deeper
 things — walking the rooms, the eyepiece, the wire, the shelf, the
-pen — tire an old man. Choose. Single letters work for the common
+pen — tire an old human. Choose. Single letters work for the common
 boards (`S D E L W T J R`). What you write in the journal matters
 more than you may at first suppose, and what fades can be fought:
 `JOURNAL COPY`.

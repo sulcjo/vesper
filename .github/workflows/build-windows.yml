@@ -6,6 +6,9 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -26,3 +29,10 @@ jobs:
         with:
           name: vesper-windows
           path: dist/vesper.exe
+
+      - name: Publish executable to GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/vesper.exe
+          generate_release_notes: true

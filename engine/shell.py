@@ -6,6 +6,8 @@ and the save file. Everything it orchestrates is testable without it.
 
 from __future__ import annotations
 
+import sys
+
 from content import boot as boot_content, endings, watches
 from engine import commands, persistence, state as st, term
 from engine.io import IO
@@ -59,6 +61,21 @@ class TerminalIO:
             return
         try:
             input(term.paint("            [enter]",
+                             *term.kind_styles("dim", self.watch)))
+        except (EOFError, KeyboardInterrupt):
+            print()
+
+    def exit_hold(self) -> None:
+        """Keep a double-clicked Windows console open after an ending.
+
+        Unlike normal dramatic holds, this is never skipped by --fast.
+        It only applies to an interactive Windows console, so redirected
+        and scripted runs still terminate normally.
+        """
+        if sys.platform != "win32" or not sys.stdin.isatty():
+            return
+        try:
+            input(term.paint("            [enter to leave the station]",
                              *term.kind_styles("dim", self.watch)))
         except (EOFError, KeyboardInterrupt):
             print()
@@ -146,5 +163,9 @@ def run(argv: list[str]) -> int:
             if keepsake_path is not None:
                 io.say(f"(something was left for you in "
                        f"{keepsake_path.parent})", "dim")
-            io.say("(a new watch begins with: python3 vesper.py)", "dim")
+            restart = ("vesper.exe" if sys.platform == "win32" and
+                       getattr(sys, "frozen", False)
+                       else "python3 vesper.py")
+            io.say(f"(a new watch begins with: {restart})", "dim")
+            io.exit_hold()
             return 0

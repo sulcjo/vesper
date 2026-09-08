@@ -3,6 +3,8 @@ name: Build Windows executable
 on:
   workflow_dispatch:
   push:
+    branches:
+      - master
     tags:
       - "v*"
 
@@ -19,11 +21,46 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install PyInstaller
-        run: pip install pyinstaller
+      - name: Install build and test tools
+        run: pip install pyinstaller pytest
+
+      - name: Run test suite
+        run: python -m pytest tests -q
+
+      - name: Verify Windows end-of-game hold
+        shell: pwsh
+        run: |
+          @'
+          from unittest.mock import patch
+          from engine.shell import TerminalIO
+
+          class InteractiveStdin:
+              def isatty(self):
+                  return True
+
+          io = TerminalIO()
+          with patch("engine.shell.sys.stdin", InteractiveStdin()), \
+               patch("builtins.input", return_value="") as mocked_input:
+              io.exit_hold()
+              assert mocked_input.call_count == 1
+              prompt = mocked_input.call_args.args[0]
+              assert "enter to leave the station" in prompt.lower()
+          print("Windows interactive exit hold: PASS")
+          '@ | python -
 
       - name: Build standalone executable
         run: pyinstaller --onefile --name vesper --console vesper.py
+
+      - name: Smoke-test packaged EXE in Windows CLI
+        shell: pwsh
+        run: |
+          $inputText = "Test Observer`nQUIT`n"
+          $inputText | .\dist\vesper.exe --fast --new | Out-File -FilePath vesper-smoke.txt -Encoding utf8
+          if ($LASTEXITCODE -ne 0) { throw "vesper.exe exited with code $LASTEXITCODE" }
+          if (-not (Select-String -Path vesper-smoke.txt -Pattern "watch waits where you left it" -Quiet)) {
+            throw "Expected clean QUIT text not found in packaged EXE output"
+          }
+          Write-Host "Packaged Windows CLI smoke test: PASS"
 
       - uses: actions/upload-artifact@v4
         with:
